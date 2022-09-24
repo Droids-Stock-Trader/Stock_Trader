@@ -12,12 +12,17 @@ followed_stocks = db.Table('followed_stocks',
 class User(UserMixin, db.Model):
     __tablename__ = 'user'
 
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(64), index=True, unique=True)
-    email = db.Column(db.String(120), index=True, unique=True)
-    password_hash = db.Column(db.String(128))
+    _PASSWORD_HASH_CHAR_LENGTH = 128
+    USERNAME_CHAR_LENGTH = 64
+    EMAIL_CHAR_LENGTH = 120
+    PHONE_NUM_CHAR_LENGTH = 15
 
-    phone_num = db.Column(db.String(15))
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(USERNAME_CHAR_LENGTH), index=True, unique=True)
+    email = db.Column(db.String(EMAIL_CHAR_LENGTH), index=True, unique=True)
+    password_hash = db.Column(db.String(_PASSWORD_HASH_CHAR_LENGTH))
+
+    phone_num = db.Column(db.String(PHONE_NUM_CHAR_LENGTH))
     dob = db.Column(db.DateTime)
     contact_pref = db.Column(db.Integer, default=1)
 
