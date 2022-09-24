@@ -22,11 +22,17 @@ class RegistrationForm(FlaskForm):
         user = User.query.filter(User.username.like(username.data)).first()
         if user is not None:
             raise ValidationError('Please use a different username.')
+        elif len(username.data) > User.USERNAME_CHAR_LENGTH:
+            raise ValidationError(
+                f'Usernames have a maximum character length of {User.USERNAME_CHAR_LENGTH} characters.')
 
     def validate_email(self, email):
         user = User.query.filter(User.email.like(email.data)).first()
         if user is not None:
             raise ValidationError('Please use a different email address')
+        elif len(email.data) > User.EMAIL_CHAR_LENGTH:
+            raise ValidationError(
+                f'Email addresses must have a maximum length of {User.EMAIL_CHAR_LENGTH} characters.')
 
 
 class ResetPasswordRequestForm(FlaskForm):
