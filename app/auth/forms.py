@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
+from app import db
 from app.models import User
 
 
@@ -19,15 +20,17 @@ class RegistrationForm(FlaskForm):
     submit = SubmitField('Register')
 
     def validate_username(self, username):
-        user = User.query.filter(User.username.like(username.data)).first()
+        user = User.query.filter(db.func.lower(User.username) == db.func.lower(username.data)).first()
         if user is not None:
             raise ValidationError('Please use a different username.')
         elif len(username.data) > User.USERNAME_CHAR_LENGTH:
             raise ValidationError(
                 f'Usernames have a maximum character length of {User.USERNAME_CHAR_LENGTH} characters.')
+        elif not username.data.find(' ') == -1:
+            raise ValidationError('The username can not contain any whitespace')
 
     def validate_email(self, email):
-        user = User.query.filter(User.email.like(email.data)).first()
+        user = User.query.filter(db.func.lower(User.email) == db.func.lower(email.data)).first()
         if user is not None:
             raise ValidationError('Please use a different email address')
         elif len(email.data) > User.EMAIL_CHAR_LENGTH:
