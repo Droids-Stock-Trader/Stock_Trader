@@ -56,7 +56,7 @@
       {% for subfield in form.contact_preference %}
       <div class="col">
         <div class="float-md-end">
-          {{ subfield }} {{ subfield.label }}
+          {{ subfield(class='form-check-input') }} {{ subfield.label(class='form-check-label') }}
         </div>
       </div>
       {% endfor %}
