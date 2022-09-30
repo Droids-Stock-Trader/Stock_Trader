@@ -31,11 +31,16 @@ Make sure that you have at least python 3.8 installed. Steps 1, 2, 4, and 5 only
     ```
     (venv) $ pip install -r requirements.txt
     ```
-5. build the database.
+5. Setup your environment variables. Within the same directory as the config.py file, create a file named ".env". Add the following environment variables to the file.
+    ```
+    SECRET_KEY=<your secret cryptographic key>
+    NEWSCATCHER_API_KEY=<api key provided by https://newscatcherapi.com/>
+    ```
+6. build the database.
     ```
     (venv) $ flask db upgrade
     ```
-6. Activate the web server.
+7. Activate the web server.
     ```
     (venv) $ flask run
     ```
