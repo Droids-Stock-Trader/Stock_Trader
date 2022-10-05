@@ -1,49 +1,24 @@
-<div class="list-group list-group-flush">
-            
-            
-            
-            
-    <a href="https://www.slashgear.com/1010269/this-tesla-feature-is-landing-elon-musk-in-hot-water/"
-        class="list-group-item list-group-item-action">
-        <div class="row mb-2">
-            <div class="col-md-2">
-                <img src="https://www.slashgear.com/img/gallery/this-tesla-feature-is-landing-elon-musk-in-hot-water/l-intro-1663267655.jpg"
-                    alt="" srcset="" class="rounded img-fluid ">
-            </div>
-            <div class="col">
-                <div>
-                    <h4>This Tesla Feature Is Landing Elon Musk In Hot Water</h4>
-                    <br>
-                    <span style="color: red">Monica J. White</span>
-                </div>
-                <div>
-                    Tesla is once again in the headlines over its Autopilot features, this time due to a proposed class
-                    action lawsuit that lobs accusations at the automaker.
-                </div>
-            </div>
+<!-- The contents of this code must be placed within a div block with the 
+the following classes: list-group list-group-flush. 
+
+The article published_date has to be parsed as a datetime object prior 
+to rendering this html template. -->
+
+<a href={{ article.link }} target="_blank" rel="noopener noreferrer" class="list-group-item list-group-item-action">
+    <div class="row">
+        <div class="col-md-3 my-2">
+            <img src="{{ article.media }}" alt="" srcset="" class="rounded img-fluid ">
         </div>
-    </a>
-
-
-
-    <a href="https://www.techtimes.com/articles/280600/20220915/tesla-installs-supercharging-pilot-program-iceland-non-tesla-vehicles.htm" class="list-group-item list-group-item-action">
-        <div class="row">    
-            <div class="col-md-2">
-                <img src="https://1734811051.rsc.cdn77.org/data/images/full/411559/us-automobile-environment-tesla.jpg" alt="" srcset="" class="rounded img-fluid">
+        <div class="col mb-2">
+            <div>
+                <span style="font-size: 25px; font-weight: bold;">{{ article.title }}</span>
+                <span style="display:inline-block">({{ article.published_date.strftime('%B %d, %Y') }})</span>
             </div>
-            <div class="col">
-                <div>
-                    <h4>Tesla Installs Supercharging Pilot Program in Iceland for Non-Tesla Vehicles</h4>
-                    <br>
-                    <span style="color: red">Joaquin Victor Tacla</span>
-                </div>
-                <div>
-                    Tesla has expanded its supercharging pilot program for non-Tesla vehicles in Iceland.
-                </div>
+            <div class="my-2">
+                <span style="display:inline-block; color:red;">{{ article.author }}</span>
+                <span style="display:inline-block">{{ article.clean_url }}</span>
             </div>
+            <div>{{ article.excerpt }}</div>
         </div>
-    </a>
-    
-
-    
-</div>
+    </div>
+</a>
