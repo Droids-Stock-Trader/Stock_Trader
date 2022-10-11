@@ -2,9 +2,15 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, BooleanField, SubmitField, DateField, RadioField
 from wtforms.validators import ValidationError, DataRequired, Email
 from app.models import User
+from app import db
+from app.auth.forms import RegistrationForm as authenticator
+from flask_login import current_user
+import re
+
 
 
 class PreferencesForm(FlaskForm):
+    """ Form for user viewing and editting their preferences. """
     username = StringField('Username', validators=[DataRequired()])
     phone_number = StringField('Phone Number')
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -13,14 +19,29 @@ class PreferencesForm(FlaskForm):
     submit = SubmitField('Save Changes')
 
     def validate_username(self, username):
-        # Need to validate that username is not already used.
-        pass
+        """ Checks if the data has changed, if it has then run validation from app/auth/RegistrationForm"""
+        if current_user.username.lower() != username.data.lower():
+            print(f'current:{current_user.username} new: {username.data}')
+            authenticator.validate_username(self, username)
 
+    
     def validate_email(self, email):
-        # Need to validate that email is not already used.
-        pass
+        """ Checks if the data has changed, if it has then run validation from app/auth/RegistrationForm"""
+        if current_user.email.lower() != email.data.lower():
+            print(f'current:{current_user.email} new: {email}')
+            authenticator.validate_email(self, email)
 
+    def validate_phone_number(self, phone_number):
+        """ Checks if the data has changed, if it has then first strip valid characters, 
+        and check whether length is correct and only contains valid characters"""
+        if current_user.phone_num != phone_number.data:
+            stripped_number = re.sub(r"[\(\)-]","",phone_number.data)
+            if (len(stripped_number) > 10):
+                raise ValidationError("Phone number is too long.")
+            if not (isinstance(eval(stripped_number), int)):
+                raise ValidationError("Invalid characters.")
 
+""" Form for user viewing and editting their notifications. """
 class NotificationForm(FlaskForm):
     account_change = BooleanField('Account Changes')
     holds = BooleanField('Holdings')
