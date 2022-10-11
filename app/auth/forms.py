@@ -6,6 +6,17 @@ from app.models import User
 
 
 class LoginForm(FlaskForm):
+    """
+    Login form
+
+    account_identifier -- can be username or e-mail
+
+    password -- User's password matching account_identifier
+
+    remember me -- Boolean field to remember login session
+
+    submit -- submit button
+    """
     account_identifier = StringField('Username or Email', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     remember_me = BooleanField('Remember Me')
@@ -13,6 +24,18 @@ class LoginForm(FlaskForm):
 
 
 class RegistrationForm(FlaskForm):
+    """
+    Registration Form
+
+    username -- Name of the user;
+
+    email -- User's email;
+
+    password -- User passsword;
+
+    password2 -- verify password;
+
+    """
     username = StringField('Username', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
@@ -20,6 +43,7 @@ class RegistrationForm(FlaskForm):
     submit = SubmitField('Register')
 
     def validate_username(self, username):
+        """ Validates that the lower case form of the username doesn't already exist in database. """
         user = User.query.filter(db.func.lower(User.username) == db.func.lower(username.data)).first()
         if user is not None:
             raise ValidationError('Please use a different username.')
@@ -30,6 +54,7 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('The username can not contain any whitespace')
 
     def validate_email(self, email):
+        """ Validates that the lower case form of the e-mail address doesn't exist in database. """
         user = User.query.filter(db.func.lower(User.email) == db.func.lower(email.data)).first()
         if user is not None:
             raise ValidationError('Please use a different email address')
@@ -39,5 +64,10 @@ class RegistrationForm(FlaskForm):
 
 
 class ResetPasswordRequestForm(FlaskForm):
+    """
+    email -- User's email
+
+    submit -- Submit button
+    """
     email = StringField('Email', validators=[DataRequired(), Email()])
     submit = SubmitField('Request Password Reset')
