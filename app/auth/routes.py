@@ -6,9 +6,10 @@ from app.auth import bp
 from app.auth.forms import LoginForm, RegistrationForm, ResetPasswordRequestForm
 from app.models import User
 
-
+# Login route
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
+    # If user is logged in here, nothing to do, return to index.
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
     form = LoginForm()
@@ -16,6 +17,7 @@ def login():
         user = User.query.filter(
             User.username.like(form.account_identifier.data) | 
             User.email.like(form.account_identifier.data)).first()
+        # If user doesn't exist or password doesn't match username
         if user is None or not user.check_password(form.password.data):
             flash('Invalid username or password')
             return redirect(url_for('auth.login'))
@@ -27,14 +29,16 @@ def login():
     return render_template('auth/login.html', title='Sign In', form=form)
 
 
+# Logout route
 @bp.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('main.welcome'))
 
-
+# Register route
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
+    # If user is logged in, nothing to do here, return to index.
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
     form = RegistrationForm()
@@ -47,9 +51,10 @@ def register():
         return redirect(url_for('auth.login'))
     return render_template('auth/register.html', title='Sign Up', form=form)
 
-
+# Reset password route
 @bp.route('/reset_password_request', methods=['GET', 'POST'])
 def reset_password_request():
+    # If user is logged in, nothing to do, return to index.
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
     form = ResetPasswordRequestForm()

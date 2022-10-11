@@ -19,6 +19,7 @@ class RegistrationForm(FlaskForm):
     password2 = PasswordField('Repeat Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Register')
 
+    # Validates that the lower case form of the username doesn't already exist in database.
     def validate_username(self, username):
         user = User.query.filter(db.func.lower(User.username) == db.func.lower(username.data)).first()
         if user is not None:
@@ -29,6 +30,7 @@ class RegistrationForm(FlaskForm):
         elif not username.data.find(' ') == -1:
             raise ValidationError('The username can not contain any whitespace')
 
+    # Validates that the lower case form of the e-mail address doesn't exist in database.
     def validate_email(self, email):
         user = User.query.filter(db.func.lower(User.email) == db.func.lower(email.data)).first()
         if user is not None:
