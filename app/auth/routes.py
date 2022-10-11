@@ -6,9 +6,9 @@ from app.auth import bp
 from app.auth.forms import LoginForm, RegistrationForm, ResetPasswordRequestForm
 from app.models import User
 
-# Login route
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
+    """ Login Route """
     # If user is logged in here, nothing to do, return to index.
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
@@ -29,15 +29,16 @@ def login():
     return render_template('auth/login.html', title='Sign In', form=form)
 
 
-# Logout route
+
 @bp.route('/logout')
 def logout():
+    """ Logout route """
     logout_user()
     return redirect(url_for('main.welcome'))
 
-# Register route
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
+    """ Register route """
     # If user is logged in, nothing to do here, return to index.
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
@@ -51,9 +52,9 @@ def register():
         return redirect(url_for('auth.login'))
     return render_template('auth/register.html', title='Sign Up', form=form)
 
-# Reset password route
 @bp.route('/reset_password_request', methods=['GET', 'POST'])
 def reset_password_request():
+    """ Reset password route """
     # If user is logged in, nothing to do, return to index.
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
