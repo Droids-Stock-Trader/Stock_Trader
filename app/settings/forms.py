@@ -21,12 +21,20 @@ class PreferencesForm(FlaskForm):
     phone_number = StringField('Phone Number')
     email = StringField('Email', validators=[DataRequired(), Email()])
     dob = DateField('Date Of Birth')
-    contact_preference = RadioField('Contact Preference', choices=[('1', 'Email'), ('2', 'Text')], default='1', validators=[DataRequired()])
+
+    choices=[('1', 'Email'), ('2', 'Text')]
+    label = 'Contact Preference'
+    val = [DataRequired()]
+    contact_preference = RadioField(label,
+                                    choices=choices,
+                                    default='1',
+                                    validators=val)
     submit = SubmitField('Save Changes')
 
     def validate_username(self, username):
         """ 
-        Checks if the data has changed, if it has then run validation from app/auth/RegistrationForm
+        Checks if the data has changed, if it has then run validation
+        from app/auth/RegistrationForm
         
         Parameters
         ------
@@ -38,7 +46,8 @@ class PreferencesForm(FlaskForm):
     
     def validate_email(self, email):
         """ 
-        Checks if the data has changed, if it has then run validation from app/auth/RegistrationForm
+        Checks if the data has changed, if it has then run validation
+        from app/auth/RegistrationForm
 
         Parameters
         ------
