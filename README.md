@@ -7,7 +7,7 @@ Make sure that you have at least python 3.8 installed. Steps 1, 2, 4, and 5 only
 1. Clone the repository
 
     ```
-    $ git clone git@github.com:tmsoc/Stock_Trader.git
+    $ git clone https://github.com/Droids-Stock-Trader/Stock_Trader.git
     $ cd Stock_Trader
     ```
 
