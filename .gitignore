@@ -132,6 +132,7 @@ dmypy.json
 app.db
 *.db
 
+.idea
 .vscode
 dev.html
 dev.py
