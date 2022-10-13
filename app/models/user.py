@@ -8,6 +8,11 @@ followed_stocks = db.Table('followed_stocks',
     db.Column('stock_id', db.Integer, db.ForeignKey('stock.id'), primary_key=True)    
 )
 
+history_log = db.Table('history_log',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
+    db.Column('history_id', db.Integer, db.ForeignKey('stock.id'), primary_key=True)    
+)
+
 
 class User(UserMixin, db.Model):
     __tablename__ = 'user'
