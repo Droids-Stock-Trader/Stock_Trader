@@ -41,6 +41,15 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+    @property
+    def portfolio_corporate_names(self) -> list:
+        """
+        Returns a list of all of the corporate names
+        of each of the stocks found within the Users
+        watch list. 
+        """
+        return [stock.corporate_name for stock in self.watch_list]
+
 
 @login.user_loader
 def load_user(id):
