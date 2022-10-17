@@ -84,3 +84,14 @@ class NotificationForm(FlaskForm):
     holds = BooleanField('Holdings')
     watchlist = BooleanField('Watch List', default='checked')
     submit = SubmitField('Save Changes')
+
+
+class HeadlinesForm(FlaskForm):
+    """
+    Form used to set the user news search results.
+
+    Extends
+    -------
+    FlaskForm
+    """
+    pass

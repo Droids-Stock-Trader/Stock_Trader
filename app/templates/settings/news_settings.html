@@ -1,0 +1,14 @@
+{% extends 'settings/_settings_base.html' %}
+
+{% block settings %}
+
+<form action="" method="post">
+  {{ form.hidden_tag() }}
+  <h2>News Settings</h2>
+</form>
+
+<script>
+  $('#sb-headlines').addClass('active')
+</script>
+
+{% endblock %}
