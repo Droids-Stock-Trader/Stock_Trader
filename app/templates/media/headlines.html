@@ -3,14 +3,21 @@
 {% block content %}
 
 <div class="container">
-    <h3>News Headlines</h3>
-    <hr>
-    <div class="list-group list-group-flush">
-        {% for article in articles %}
-        {% include 'media/_news_listing.html' %}
-        {% endfor %}
-    </div>
-
+  <h3>News Headlines</h3>
+  <hr>
+  {% if status_code != 200 %}
+  <ul>
+    <li>
+      <h4>{{ message }}</h4>
+    </li>
+  </ul>
+  {% else %}
+  <div class="list-group list-group-flush">
+    {% for article in articles %}
+    {% include 'media/_news_listing.html' %}
+    {% endfor %}
+  </div>
+  {% endif %}
 </div>
 
 {% endblock %}
