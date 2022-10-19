@@ -94,7 +94,8 @@ class News(db.Model):
         # into a list, parses the published dates into python datatime objects
         # and calculates the next/previous pagination numbers.
         if status_code == 200:
-            articles = response.json()["articles"]
+            response_dict = response.json()
+            articles = response_dict["articles"]
             for i in range(len(articles)):
                 articles[i]["published_date"] = dt.strptime(
                     articles[i]["published_date"], "%Y-%m-%d %H:%M:%S"
@@ -102,7 +103,7 @@ class News(db.Model):
             message = None
             # Pagination
             current_page = int(params['page'])
-            total_pages = response.json()['total_pages']
+            total_pages = response_dict['total_pages']
             prev_url = current_page - 1 if current_page > 1 else None
             next_url = current_page + 1 if current_page < total_pages else None
         # if the response has an error, return an empty list along
