@@ -24,7 +24,7 @@ class News(db.Model):
     media = db.Column(db.String(URL_LENGTH))
 
     @staticmethod
-    def search_news_results(query: list, page: int) -> list:
+    def search_news_results(query: list, page: int) -> dict:
         """
         Calls the news api quering news articles that are
         related the to list of key phases provide. Returns
@@ -51,7 +51,7 @@ class News(db.Model):
         return News._call_news_api(url, params, headers)
 
     @staticmethod
-    def latest_headlines(page: int) -> list:
+    def latest_headlines(page: int) -> dict:
         """
         Returns the latest headlines that are related
         to either finance, business, or economics. Returns
@@ -74,7 +74,7 @@ class News(db.Model):
         return News._call_news_api(url, params, headers)
 
     @staticmethod
-    def _call_news_api(url: str, params: dict, headers: dict) -> list:
+    def _call_news_api(url: str, params: dict, headers: dict) -> dict:
         """
         Performs the api call to the given url and Returns
         a dictionary contining the status code, articles, api message,
