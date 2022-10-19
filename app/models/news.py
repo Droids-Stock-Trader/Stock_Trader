@@ -28,7 +28,8 @@ class News(db.Model):
         """
         Calls the news api quering news articles that are
         related the to list of key phases provide. Returns
-        a list of articles.
+        a dictionary contining the status code, articles, api message,
+        and next/previous pages.
 
         Params
         ------
@@ -54,7 +55,8 @@ class News(db.Model):
         """
         Returns the latest headlines that are related
         to either finance, business, or economics. Returns
-        a list of news articles.
+        a dictionary contining the status code, articles, 
+        api message, and next/previous pages.
 
         Params
         ------
@@ -74,8 +76,9 @@ class News(db.Model):
     @staticmethod
     def _call_news_api(url: str, params: dict, headers: dict) -> list:
         """
-        Performs the api call to the given url and returns
-        a list of news articles.
+        Performs the api call to the given url and Returns
+        a dictionary contining the status code, articles, api message,
+        and next/previous pages.
 
         Params
         ------
@@ -88,18 +91,30 @@ class News(db.Model):
         response = request("GET", url=url, headers=headers, params=params)
         status_code = response.status_code
         # If the call was successful, extract the acticles from the response
-        # into a list, and pars the published dates into python datatime objects.
+        # into a list, parses the published dates into python datatime objects
+        # and calculates the next/previous pagination numbers.
         if status_code == 200:
             articles = response.json()["articles"]
             for i in range(len(articles)):
                 articles[i]["published_date"] = dt.strptime(
                     articles[i]["published_date"], "%Y-%m-%d %H:%M:%S"
                 )
-            message = "Success"
-        # if the response has an error, retrun an empty list along 
-        # with the error message. 
+            message = None
+            # Pagination
+            current_page = int(params['page'])
+            total_pages = response.json()['total_pages']
+            prev_url = current_page - 1 if current_page > 1 else None
+            next_url = current_page + 1 if current_page < total_pages else None
+        # if the response has an error, return an empty list along
+        # with the error message.
         else:
             articles = []
             message = response.json()["message"]
+            prev_url = None
+            next_url = None
 
-        return [status_code, articles, message]
+        return {'status_code': status_code,
+                'articles': articles,
+                'message': message,
+                'prev_url': prev_url,
+                'next_url': next_url}

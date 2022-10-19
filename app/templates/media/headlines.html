@@ -5,19 +5,34 @@
 <div class="container">
   <h3>News Headlines</h3>
   <hr>
-  {% if status_code != 200 %}
+  {% if message %}
   <ul>
     <li>
       <h4>{{ message }}</h4>
     </li>
   </ul>
-  {% else %}
-  <div class="list-group list-group-flush">
+  {% endif %}
+  <div class="list-group list-group-flush mb-3">
     {% for article in articles %}
     {% include 'media/_news_listing.html' %}
     {% endfor %}
   </div>
-  {% endif %}
+  <div class="d-flex justify-content-between">
+    <ul class="pagination">
+      <li class="page-item{% if not prev_url %} disabled{% endif %}">
+        <a href="{{ url_for('media.headlines', page=prev_url) }}" class="page-link">
+          Previous
+        </a>
+      </li>
+    </ul>
+    <ul class="pagination">
+      <li class="page-item{% if not next_url %} disabled{% endif %}">
+        <a href="{{ url_for('media.headlines', page=next_url) }}" class="page-link">
+          Next
+        </a>
+      </li>
+    </ul>
+  </div>
 </div>
 
 {% endblock %}
