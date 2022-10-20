@@ -5,20 +5,20 @@ The article published_date has to be parsed as a datetime object prior
 to rendering this html template. -->
 
 <a href={{ article.link }} target="_blank" rel="noopener noreferrer" class="list-group-item list-group-item-action">
-    <div class="row">
-        <div class="col-md-3 my-2">
-            <img src="{{ article.media }}" alt="" srcset="" class="rounded img-fluid ">
-        </div>
-        <div class="col mb-2">
-            <div>
-                <span style="font-size: 25px; font-weight: bold;">{{ article.title }}</span>
-                <span style="display:inline-block">({{ article.published_date.strftime('%B %d, %Y') }})</span>
-            </div>
-            <div class="my-2">
-                <span style="display:inline-block; color:red;">{{ article.author }}</span>
-                <span style="display:inline-block">{{ article.clean_url }}</span>
-            </div>
-            <div>{{ article.excerpt }}</div>
-        </div>
+  <div class="row">
+    <div class="col-md-3 my-2">
+      <img src="{{ article.media }}" alt="" srcset="" class="rounded img-fluid ">
     </div>
+    <div class="col mb-2">
+      <div>
+        <span style="font-size: 25px; font-weight: bold;">{{ article.title }}</span>
+        <span style="display:inline-block">({{ article.published_date.strftime('%B %d, %Y') }})</span>
+      </div>
+      <div class="my-2">
+        <span style="display:inline-block; color:red;">{{ article.author }}</span>
+        <span style="display:inline-block">{{ article.clean_url }}</span>
+      </div>
+      <div>{{ article.excerpt }}</div>
+    </div>
+  </div>
 </a>
