@@ -8,11 +8,6 @@ followed_stocks = db.Table('followed_stocks',
     db.Column('stock_id', db.Integer, db.ForeignKey('stock.id'), primary_key=True)    
 )
 
-history_log = db.Table('history_log',
-    db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
-    db.Column('history_id', db.Integer, db.ForeignKey('stock.id'), primary_key=True)    
-)
-
 
 class User(UserMixin, db.Model):
     __tablename__ = 'user'
@@ -36,6 +31,7 @@ class User(UserMixin, db.Model):
     watchlist_notify = db.Column(db.Boolean, default=True)
 
     watch_list = db.relationship('Stock', secondary=followed_stocks, backref='users')
+    history_list = db.relationship('History')
 
     def __repr__(self):
         return f'<User: {self.username}>'
