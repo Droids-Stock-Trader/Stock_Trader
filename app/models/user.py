@@ -31,6 +31,7 @@ class User(UserMixin, db.Model):
     watchlist_notify = db.Column(db.Boolean, default=True)
 
     watch_list = db.relationship('Stock', secondary=followed_stocks, backref='users')
+    history_list = db.relationship('History')
 
     def __repr__(self):
         return f'<User: {self.username}>'
