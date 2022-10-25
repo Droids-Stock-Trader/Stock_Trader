@@ -6,8 +6,10 @@ import re
 
 def validate_new_username(username):
     """
-    Validates that the lower case form of the username
-    doesn't already exist in database.
+    Validates username to fit the following requirements.
+    Maximum Length < User.USERNAME_CHAR_LENGTH.
+    Contains no whitespace.
+    Lowercase form of username not in use.
 
     Parameters
     ------
@@ -24,8 +26,9 @@ def validate_new_username(username):
 
 def validate_new_email(email):
     """
-    Validates that the lower case form of the e-mail address
-    doesn't exist in database.
+    Validates email to fit the following requirements.
+    Maximum Length < User.EMAIL_CHAR_LENGTH.
+    Lowercase form of email not in use.
 
     Parameters
     ------
@@ -42,7 +45,7 @@ def validate_new_email(email):
 def validate_phone_number(phone_number):
     """ 
     Checks if the data has changed, if it has then first strip valid characters, 
-    and check whether length is correct and only contains valid characters
+    and check whether length is correct and only contains numbers
     
     Parameters
     ------
