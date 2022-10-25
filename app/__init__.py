@@ -3,6 +3,10 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from config import Config
+# imports for email server setup
+from flask_mail import Mail 
+import logging
+from logging.handlers import SMTPHandler
 
 
 db = SQLAlchemy()
@@ -10,6 +14,8 @@ migrate = Migrate()
 login = LoginManager()
 login.login_view = 'auth.login'
 login.login_message = 'Please log in to access this page.'
+# the mail object used to format and send emails
+mail = Mail()
 
 
 def create_app(config_class=Config):
@@ -19,6 +25,8 @@ def create_app(config_class=Config):
     db.init_app(app)
     migrate.init_app(app, db)
     login.init_app(app)
+    # attaches app to mail object
+    mail.init_app(app)
 
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)

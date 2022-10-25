@@ -2,7 +2,7 @@
 
 ## Setup
 
-Make sure that you have at least python 3.8 installed. Steps 1, 2, 4, and 5 only need to be performed once (step 5 needs to be performed every time we modify the database). 
+Make sure that you have at least python 3.8 installed. Steps 1, 2, 4, and 5 only need to be performed once (step 6 needs to be performed every time we modify the database). 
 
 1. Clone the repository
 

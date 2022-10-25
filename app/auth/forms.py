@@ -3,6 +3,7 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from app import db
 from app.models import User
+import app.validation.form_validation as validation
 
 
 class LoginForm(FlaskForm):
@@ -43,24 +44,26 @@ class RegistrationForm(FlaskForm):
     submit = SubmitField('Register')
 
     def validate_username(self, username):
-        """ Validates that the lower case form of the username doesn't already exist in database. """
-        user = User.query.filter(db.func.lower(User.username) == db.func.lower(username.data)).first()
-        if user is not None:
-            raise ValidationError('Please use a different username.')
-        elif len(username.data) > User.USERNAME_CHAR_LENGTH:
-            raise ValidationError(
-                f'Usernames have a maximum character length of {User.USERNAME_CHAR_LENGTH} characters.')
-        elif not username.data.find(' ') == -1:
-            raise ValidationError('The username can not contain any whitespace')
+        """ 
+        Validates that the lower case form of the username doesn't
+        already exist in database.
+
+        Parameters
+        ------
+        username - the username to validate.
+        """
+        validation.validate_new_username(username)
 
     def validate_email(self, email):
-        """ Validates that the lower case form of the e-mail address doesn't exist in database. """
-        user = User.query.filter(db.func.lower(User.email) == db.func.lower(email.data)).first()
-        if user is not None:
-            raise ValidationError('Please use a different email address')
-        elif len(email.data) > User.EMAIL_CHAR_LENGTH:
-            raise ValidationError(
-                f'Email addresses must have a maximum length of {User.EMAIL_CHAR_LENGTH} characters.')
+        """
+        Validates that the lower case form of the e-mail address 
+        doesn't exist in database.
+
+        Parameters
+        ------
+        email - the email to validate.
+        """
+        validation.validate_new_email(email)
 
 
 class ResetPasswordRequestForm(FlaskForm):
