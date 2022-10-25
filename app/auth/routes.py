@@ -5,6 +5,9 @@ from app import db
 from app.auth import bp
 from app.auth.forms import LoginForm, RegistrationForm, ResetPasswordRequestForm
 from app.models import User
+from app.emails.email import send_password_reset_email
+from app.auth.forms import ResetPasswordForm
+
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
@@ -54,17 +57,28 @@ def register():
 
 @bp.route('/reset_password_request', methods=['GET', 'POST'])
 def reset_password_request():
-    """ Reset password route """
-    # If user is logged in, nothing to do, return to index.
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
     form = ResetPasswordRequestForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user:
-            pass
-            # send_password_reset_email(user)
-        flash('Email functionality needs to be implemented along with user email tokens to reset passwords. Need to implement within auth.reset_password_request() and email function.')
+            send_password_reset_email(user)
+        flash('Check your email for the instructions to reset your password')
         return redirect(url_for('auth.login'))
-    return render_template('auth/reset_password_request.html',
-                           title='Reset Password', form=form)
+    return render_template('email/reset_password_request.html', title='Reset Password', form=form)
+
+@bp.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
+    user = User.verify_reset_password_token(token)
+    if not user:
+        return redirect(url_for('main.index'))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        user.set_password(form.password.data)
+        db.session.commit()
+        flash('Your password has been reset.')
+        return redirect(url_for('auth.login'))
+    return render_template('email/reset_password2.html', form=form)
