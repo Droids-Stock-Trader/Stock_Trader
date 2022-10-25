@@ -3,7 +3,7 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from app import db
 from app.models import User
-import app.validation.string_validation as validation
+import app.validation.form_validation as validation
 
 
 class LoginForm(FlaskForm):
@@ -52,7 +52,7 @@ class RegistrationForm(FlaskForm):
         ------
         username - the username to validate.
         """
-        validation.validate_username(username)
+        validation.validate_new_username(username)
 
     def validate_email(self, email):
         """
@@ -63,7 +63,7 @@ class RegistrationForm(FlaskForm):
         ------
         email - the email to validate.
         """
-        validation.validate_email(email)
+        validation.validate_new_email(email)
 
 
 class ResetPasswordRequestForm(FlaskForm):

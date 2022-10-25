@@ -5,7 +5,7 @@ from app.models import User
 from app import db
 from app.auth.forms import RegistrationForm as authenticator
 from flask_login import current_user
-import app.validation.string_validation as validation
+import app.validation.form_validation as validation
 
 
 
@@ -41,7 +41,7 @@ class PreferencesForm(FlaskForm):
         Username -- the username to validate.
         """
         if current_user.username.lower() != username.data.lower():
-            validation.validate_username(username)
+            validation.validate_new_username(username)
 
     
     def validate_email(self, email):
@@ -54,7 +54,7 @@ class PreferencesForm(FlaskForm):
         email -- the email to validate.
         """
         if current_user.email.lower() != email.data.lower():
-            validation.validate_email(email)
+            validation.validate_new_email(email)
 
     def validate_phone_number(self, phone_number):
         """ 
