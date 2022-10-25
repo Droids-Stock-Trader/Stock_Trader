@@ -5,7 +5,7 @@ from app.models import User
 from app import db
 from app.auth.forms import RegistrationForm as authenticator
 from flask_login import current_user
-import re
+import app.validation.form_validation as validation
 
 
 
@@ -34,43 +34,39 @@ class PreferencesForm(FlaskForm):
     def validate_username(self, username):
         """ 
         Checks if the data has changed, if it has then run validation
-        from app/auth/RegistrationForm
+        from app/validation
         
         Parameters
         ------
         Username -- the username to validate.
         """
         if current_user.username.lower() != username.data.lower():
-            authenticator.validate_username(self, username)
+            validation.validate_new_username(username)
 
     
     def validate_email(self, email):
         """ 
         Checks if the data has changed, if it has then run validation
-        from app/auth/RegistrationForm
+        from app/validation
 
         Parameters
         ------
         email -- the email to validate.
         """
         if current_user.email.lower() != email.data.lower():
-            authenticator.validate_email(self, email)
+            validation.validate_new_email(email)
 
     def validate_phone_number(self, phone_number):
         """ 
-        Checks if the data has changed, if it has then first strip valid characters, 
-        and check whether length is correct and only contains valid characters
+        Checks if the data has changed, if it has then run validation
+        from app/validation
         
         Parameters
         ------
         phone_number -- the phone number to validate.
         """
         if current_user.phone_num != phone_number.data:
-            stripped_number = re.sub(r"[\(\)-]","",phone_number.data)
-            if (len(stripped_number) > 10):
-                raise ValidationError("Phone number is too long.")
-            if not (isinstance(eval(stripped_number), int)):
-                raise ValidationError("Invalid characters.")
+            validation.validate_phone_number(phone_number)
 
 class NotificationForm(FlaskForm):
     """ 
