@@ -4,7 +4,155 @@
 
 <form action="" method="post">
   {{ form.hidden_tag() }}
-  <h2>News Settings</h2>
+  <h3>News Settings</h3>
+  <hr>
+  <div class="px-3 mb-3">
+    <!-- Topics -->
+    <div>
+      <h5 class="ms-0 ps-0">
+        Search Domains
+      </h5>
+    </div>
+    <div class="row">
+      <!-- Left Column -->
+      <div class="col-md-6">
+        <div class="row ps-2 mb-1">
+          <div class="col-2 form-check form-switch">
+            {{ form.news(class='form-check-input') }}
+          </div>
+          <div class="col-10">
+            {{ form.news.label(class='form-label') }}
+          </div>
+        </div>
+        <div class="row ps-2 mb-1">
+          <div class="col-2 form-check form-switch">
+            {{ form.sports(class='form-check-input') }}
+          </div>
+          <div class="col-10">
+            {{ form.sports.label(class='form-label') }}
+          </div>
+        </div>
+        <div class="row ps-2 mb-1">
+          <div class="col-2 form-check form-switch">
+            {{ form.tech(class='form-check-input') }}
+          </div>
+          <div class="col-10">
+            {{ form.tech.label(class='form-label') }}
+          </div>
+        </div>
+        <div class="row ps-2 mb-1">
+          <div class="col-2 form-check form-switch">
+            {{ form.world(class='form-check-input') }}
+          </div>
+          <div class="col-10">
+            {{ form.world.label(class='form-label') }}
+          </div>
+        </div>
+        <div class="row ps-2 mb-1">
+          <div class="col-2 form-check form-switch">
+            {{ form.finance(class='form-check-input') }}
+          </div>
+          <div class="col-10">
+            {{ form.finance.label(class='form-label') }}
+          </div>
+        </div>
+        <div class="row ps-2 mb-1">
+          <div class="col-2 form-check form-switch">
+            {{ form.politics(class='form-check-input') }}
+          </div>
+          <div class="col-10">
+            {{ form.politics.label(class='form-label') }}
+          </div>
+        </div>
+        <div class="row ps-2 mb-1">
+          <div class="col-2 form-check form-switch">
+            {{ form.business(class='form-check-input') }}
+          </div>
+          <div class="col-10">
+            {{ form.business.label(class='form-label') }}
+          </div>
+        </div>
+        <div class="row ps-2 mb-1">
+          <div class="col-2 form-check form-switch">
+            {{ form.economics(class='form-check-input') }}
+          </div>
+          <div class="col-10">
+            {{ form.economics.label(class='form-label') }}
+          </div>
+        </div>
+      </div>
+      <!-- Right Column -->
+      <div class="col-md-6">
+        <div class="row ps-2 mb-1">
+          <div class="col-2 form-check form-switch">
+            {{ form.entertainment(class='form-check-input') }}
+          </div>
+          <div class="col-10">
+            {{ form.entertainment.label(class='form-label') }}
+          </div>
+        </div>
+        <div class="row ps-2 mb-1">
+          <div class="col-2 form-check form-switch">
+            {{ form.beauty(class='form-check-input') }}
+          </div>
+          <div class="col-10">
+            {{ form.beauty.label(class='form-label') }}
+          </div>
+        </div>
+        <div class="row ps-2 mb-1">
+          <div class="col-2 form-check form-switch">
+            {{ form.travel(class='form-check-input') }}
+          </div>
+          <div class="col-10">
+            {{ form.travel.label(class='form-label') }}
+          </div>
+        </div>
+        <div class="row ps-2 mb-1">
+          <div class="col-2 form-check form-switch">
+            {{ form.music(class='form-check-input') }}
+          </div>
+          <div class="col-10">
+            {{ form.music.label(class='form-label') }}
+          </div>
+        </div>
+        <div class="row ps-2 mb-1">
+          <div class="col-2 form-check form-switch">
+            {{ form.food(class='form-check-input') }}
+          </div>
+          <div class="col-10">
+            {{ form.food.label(class='form-label') }}
+          </div>
+        </div>
+        <div class="row ps-2 mb-1">
+          <div class="col-2 form-check form-switch">
+            {{ form.science(class='form-check-input') }}
+          </div>
+          <div class="col-10">
+            {{ form.science.label(class='form-label') }}
+          </div>
+        </div>
+        <div class="row ps-2 mb-1">
+          <div class="col-2 form-check form-switch">
+            {{ form.gaming(class='form-check-input') }}
+          </div>
+          <div class="col-10">
+            {{ form.gaming.label(class='form-label') }}
+          </div>
+        </div>
+        <div class="row ps-2 mb-1">
+          <div class="col-2 form-check form-switch">
+            {{ form.energy(class='form-check-input') }}
+          </div>
+          <div class="col-10">
+            {{ form.energy.label(class='form-label') }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mb-5">
+    {{ form.submit(class='btn btn-outline-primary') }}
+  </div>
 </form>
 
 <script>
