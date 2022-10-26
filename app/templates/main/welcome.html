@@ -2,30 +2,46 @@
 
 {% block content %}
 
-<div class="container">
-    <div class="p-5 bg-secondary text-white rounded">
-        <div class="row">
-            <div class="col-md-4">
-                <img src="{{ url_for('static', filename='logo-200.png') }}" alt="Logo">
-            </div>
-            <div class="col-md-8">
-                <h1 class="m-0">Stock Trader</h1><br>
-                <h3 class="mt-0">Track all your stocks from one app</h3><br>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Cumque modi debitis cupiditate itaque explicabo eveniet alias ratione aliquid natus, doloremque ab! Sunt velit, obcaecati reiciendis libero quae at illum facere.
+<div>
+    <div class="container">
+        <div class="text-warning" style="background-color: #64509B; min-height: 50vh;">
+            <div class="row">
+                <div class="col-md-4">
+                    <img src="{{ url_for('static', filename='logo-200.png') }}"class="img-fluid" alt="Logo" width="500" height="600">
+                </div>
+                <div class="col-md-8">
+                    <h1 class="m-0" style="color:text-warning;" >Stock Trader</h1><br>
+                    <h2 class="m-1"><em>THE FUTURE IS HERE</em></h2><br>
+                    Stock Trader provides solution
+                    <ul>
+                        <li>multiple brokerage accounts</li>
+                        <li>tracking positions between different accounts</li>
+                        <li>complex interface</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
-<div class="container my-5">
+    <div class="container my-5">
     <div class="row">
-        <div class="col-md-6 p-3">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Necessitatibus natus aperiam tempora autem eum! Asperiores quos eveniet sunt, doloremque doloribus, aliquam necessitatibus ipsa, laborum omnis aperiam dolorum debitis vel corporis. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Qui aperiam ipsum libero commodi similique vero dicta a ratione, corrupti, ad voluptates atque dolorum accusamus, obcaecati distinctio consectetur earum quidem repellendus?
+        <div class="col-sm-6 p-3">
+            <h2 style="color:text-dark;"><em>HOW WE SOLVED THIS!</em></h2><br>
+            <ul>
+                <li>One single account access to multiple brokers</li>
+                <li>All stock positions in one place</li>
+                <li>Uniform Process no matter what exchange you trade on</li>
+            </ul>
         </div>
-        <div class="col-md-6 p-3">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Alias amet maiores iusto dolores id ipsum officia a beatae, provident esse numquam mollitia obcaecati expedita necessitatibus rerum dolore deleniti cupiditate quae? Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat facilis doloribus suscipit repellat. Eaque dolorum quis aperiam laboriosam, quibusdam ipsam inventore ipsa fugit ex, quasi ut, quaerat ab itaque ratione?
+        <div class="col-md-5 p-3">
+            <h2 style="color:text-dark;"><em>FEATURES</em></h2><br>
+            <ul>
+                <li>Authenticate with supported brokerages API</li>
+                <li>As many brokerage accounts as a user wants</li>
+                <li>View all positions and balances in one place</li>
+                <li>Execute trades from our platform</li>
+                <li>Customized news feed</li>
+            </ul>
         </div>
     </div>
 </div>
-
 {% endblock %}
