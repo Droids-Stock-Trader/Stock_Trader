@@ -9,5 +9,8 @@ from app.models import dev_account_history
 @bp.route('/account_history')
 @login_required
 def account_history():
+    """
+    Renders account history page.
+    """
     data = dev_account_history
     return render_template('history/account_history.html', title='Account History', data=data)
