@@ -8,6 +8,10 @@ from app.models import News
 @bp.route("/headlines")
 @login_required
 def headlines():
+    """
+    Presents news that is relevant to user's portfolio.
+    If user has no stocks then general financial news is displayed
+    """
     # gets the corporate names of all the stocks within
     # the current users portfolio in list form
     stock_names = current_user.portfolio_corporate_names

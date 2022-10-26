@@ -7,6 +7,10 @@ from app.models._development_data import dev_stock_data, dev_stock_dates, dev_st
 @bp.route('/')
 @bp.route('/index')
 def index():
+    """
+    Default route when visiting main site.
+    If user is logged in will redirect to welcome, otherwise presents dashboard.
+    """
     if current_user.is_anonymous:
         return redirect(url_for('main.welcome'))
     portfolio = dev_stock_data
@@ -16,6 +20,9 @@ def index():
 @bp.route('/query_stock_info', methods=['POST'])
 @login_required
 def query_stock_info():
+    """
+    Makes an HTTPS POST request for information on a stock
+    """
     # this all needs to be rewritten to use the db and to do proper error checking
     stock_id = int(request.form['id'])
     data = [stock for stock in dev_stock_data if stock['id'] == stock_id][0]
@@ -26,4 +33,7 @@ def query_stock_info():
 
 @bp.route('/welcome')
 def welcome():
+    """
+    Renders the welcome.html template
+    """
     return render_template('main/welcome.html', title='Welcome')
