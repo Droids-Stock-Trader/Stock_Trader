@@ -34,6 +34,6 @@ def query_stock_info():
 @bp.route('/welcome')
 def welcome():
     """
-    Renders the welcome.html tempalte
+    Renders the welcome.html template
     """
     return render_template('main/welcome.html', title='Welcome')
