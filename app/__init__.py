@@ -1,7 +1,8 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
 from flask_login import LoginManager
+from flask_migrate import Migrate
+from flask_moment import Moment
+from flask_sqlalchemy import SQLAlchemy
 from config import Config
 # imports for email server setup
 from flask_mail import Mail 
@@ -16,6 +17,7 @@ login.login_view = 'auth.login'
 login.login_message = 'Please log in to access this page.'
 # the mail object used to format and send emails
 mail = Mail()
+moment = Moment()
 
 
 def create_app(config_class=Config):
@@ -27,6 +29,7 @@ def create_app(config_class=Config):
     login.init_app(app)
     # attaches app to mail object
     mail.init_app(app)
+    moment.init_app(app)
 
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)
