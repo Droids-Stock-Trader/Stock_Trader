@@ -80,3 +80,33 @@ class NotificationForm(FlaskForm):
     holds = BooleanField('Holdings')
     watchlist = BooleanField('Watch List', default='checked')
     submit = SubmitField('Save Changes')
+
+
+class HeadlinesForm(FlaskForm):
+    """
+    Form used to set the user news search results.
+
+    Extends
+    -------
+    FlaskForm
+    """
+    # search domains
+    news = BooleanField('News', default='checked')
+    sports = BooleanField('Sports', default='checked')
+    tech = BooleanField('Technology', default='checked')
+    world = BooleanField('World', default='checked')
+    finance = BooleanField('Finance', default='checked')
+    politics = BooleanField('Politics', default='checked')
+    business = BooleanField('Business', default='checked')
+    economics = BooleanField('Econmics', default='checked')
+    entertainment = BooleanField('Entertainment', default='checked')
+    beauty = BooleanField('Beauty', default='checked')
+    travel = BooleanField('Travel', default='checked')
+    music = BooleanField('Music', default='checked')
+    food = BooleanField('Food', default='checked')
+    science = BooleanField('Science', default='checked')
+    gaming = BooleanField('Gaming', default='checked')
+    energy = BooleanField('Energy', default='checked')
+    submit = SubmitField('Save Changes')
+    
+

@@ -2,7 +2,7 @@ from flask import render_template, url_for, redirect, flash
 from flask_login import current_user, login_required
 from app import db
 from app.settings import bp
-from app.settings.forms import PreferencesForm, NotificationForm
+from app.settings.forms import PreferencesForm, NotificationForm, HeadlinesForm
 
 
 @bp.route('/preferences', methods=['GET', 'POST'])
@@ -49,3 +49,10 @@ def user_notifications():
     form.watchlist.data = current_user.watchlist_notify
 
     return render_template('settings/notifications.html', title='Notification Settings', form=form)
+
+
+@bp.route('/headlines', methods=['GET', 'POST'])
+@login_required
+def news_settings():
+    form = HeadlinesForm()
+    return render_template('settings/news_settings.html', title='News Settings', form=form)
