@@ -42,6 +42,16 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+    def store_history_record(self, record) -> None:
+        """
+        Stores a history record to the User. 
+        Params
+        ------
+        record - The History item to add to the users
+        history_list.
+        """
+        self.history_list.append(record)
+
     @property
     def portfolio_corporate_names(self) -> list:
         """
