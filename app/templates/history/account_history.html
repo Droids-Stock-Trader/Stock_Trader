@@ -6,11 +6,11 @@
   <h3 class="ms-3">Account History</h3>
   <hr>
   <div class="list-group list-group-flush border-bottom scrollarea">
-    {% for record in data %}
+    {% for record in history %}
     <a href="#" class="list-group-item list-group-item-action py-3 lh-sm">
       <div>
-        <strong>{{ record.time_stamp.strftime('%m/%d/%Y - %I:%M%p') }} {{ record.type }}</strong><br>
-        {{ record.record }}
+        <strong>{{ moment(record.timedata).format('LLL') }} - {{ record.title }}</strong><br>
+        {{ record.description }}
       </div>
     </a>
     {% endfor %}
