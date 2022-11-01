@@ -20,6 +20,15 @@ class Stock(db.Model):
 
     @staticmethod
     def get_stock_bars(symbol, Unit : TimeFrameUnit, start_datetime : datetime):
+        """
+        Used to query a stock for price and history data.
+
+        Parameters
+        ----------
+        symbol - stock symbol.
+        Unit - Timeframe for bars to cover.
+        start_datetime - How far into the past the data requested should go.
+        """
         ALPACA_API_KEY = os.environ.get('ALPACA_API_KEY')
         ALPACA_SECRET_KEY = os.environ.get('ALPACA_SECRET_KEY')
         client = StockHistoricalDataClient(ALPACA_API_KEY,ALPACA_SECRET_KEY)
@@ -34,6 +43,10 @@ class Stock(db.Model):
 
     @staticmethod
     def get_stock_info(symbol):
+        """
+        Method for retrieving basic information about a stock such as name,
+        symbol, and status.  Not for price/history data.
+        """
         ALPACA_API_KEY = os.environ.get('ALPACA_API_KEY')
         ALPACA_SECRET_KEY = os.environ.get('ALPACA_SECRET_KEY')
         trading_client = TradingClient(ALPACA_API_KEY,ALPACA_SECRET_KEY)

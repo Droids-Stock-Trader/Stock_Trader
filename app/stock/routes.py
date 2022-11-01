@@ -24,7 +24,14 @@ def stock():
 @bp.route('/stock_info', methods=['POST'])
 @login_required
 def stock_info():
-    """ Endpoint for processing stock info requests """
+    """ 
+    Endpoint for processing stock info requests 
+    
+    HTTP Body Request Parameters
+    ----------
+    symbol - The symbol of stock to query
+    timescale - The scale of graph to retrieve [Minute|Day|Week|Month|Year]
+    """
     symbol = request.form['symbol']
     timescale = request.form['time']
     today = datetime.today()
