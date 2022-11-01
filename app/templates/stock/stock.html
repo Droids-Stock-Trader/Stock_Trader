@@ -5,10 +5,73 @@
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
 <div class="container mt-3">
-    {{stock.name}}
-    {{stock.symbol}}
-    {{stock.exchange}}
+    <div class="row g-5">
+        <div class="col-md-5 mb-5 order-md-first order-last">
+          <h2 class="ms-3">Positions</h2>
+          <div class="list-group list-group-flush border-bottom scrollarea">
+            {% if positions|length > 0 %}
+              {% for stock in portfolio %}
+                <div class="list-group-item-flush">A</div>
+              {% endfor %}
+            {% else %}
+              <h3>You currently have no positions.</h2>
+            {% endif %} 
+          </div>
+          <div class="row">
+            <div class="input-group col">
+              <div class="input-group-prepend">
+                <span class="input-group-text btn-success" id="basic-addon1">Buy</span>
+              </div>
+              <input type="text" class="form-control" placeholder="+1" aria-describedby="basic-addon1">
+            </div> 
+            <div class="input-group col">
+              <div class="input-group-prepend">
+                <span class="input-group-text btn-danger" id="basic-addon1">Sell</span>
+              </div>
+              <input type="text" class="form-control" placeholder="-1" aria-describedby="basic-addon1">
+            </div> 
+          </div>
+          <div class="row">
+            <h4 class="col" id="open_price">Open price :</h4>
+            <h4 class="col" id="close_price">Close price :</h4>
+          </div>
+        </div>
+        <div class="col-md-7 mb-5">
+          <h3 id="stock_graph">{{ stock['name'] }}</h3>
+          <div class="card">
+            <div class="card-body">
+              <div class="border border-2 rounded">
+                <div id="price_plot" style="width:100%;max-width:700px"></div>
+            </div>
+            </div>
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+              <label class="btn btn-dark active">
+                <input type="radio" name="options" id="option1" autocomplete="off" checked> 1d
+              </label>
+              <label class="btn btn-dark">
+                <input type="radio" name="options" id="option2" autocomplete="off"> 1w
+              </label>
+              <label class="btn btn-dark">
+                <input type="radio" name="options" id="option3" autocomplete="off"> 1m
+              </label>
+              <label class="btn btn-dark">
+                <input type="radio" name="options" id="option4" autocomplete="off"> 1y
+              </label>
+              <label class="btn btn-dark">
+                <input type="radio" name="options" id="option5" autocomplete="off"> 5y
+              </label>
+            </div>
+            <div class="card-footer">
+              <strong>Exchange:</strong> {{ stock['exchange'] }}<br>
+              <strong>Symbol:</strong> {{stock['symbol']}}<br>
+              <strong>Status:</strong> {% if stock['status'] == 'active' %} Active {% else %} Inactive {% endif %}<br>
+              <strong>Tradeable:</strong> {% if stock['tradable'] %} Ready to trade {% else %} Unavailable {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
 </div>
-
+<script src="{{ url_for('static', filename='stock/stock_detail.js') }}"></script>
+<script>load_detail('{{stock["symbol"]}}')</script>
 
 {% endblock %}
