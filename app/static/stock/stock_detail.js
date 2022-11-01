@@ -3,9 +3,9 @@ let graph_prices = null;
 let layout = null;
 
 
-function load_detail(stock_symbol) {
+function load_detail(stock_symbol, timeframe) {
     $.ajax({
-        data: { symbol: stock_symbol },
+        data: { symbol: stock_symbol, time: timeframe },
         type: 'POST',
         url: '/stock/stock_info'
     }).done(function (data) {
@@ -68,15 +68,6 @@ function load_detail(stock_symbol) {
     }).fail(function () {
         console.log("Failed AJAX Call");
     });
-}
-
-
-function cycle_next_stock() {
-    current_stock = current_stock.next();
-    if (current_stock.length == 0) {
-        current_stock = $("#stock_listing").first();
-    }
-    current_stock.click();
 }
 
 

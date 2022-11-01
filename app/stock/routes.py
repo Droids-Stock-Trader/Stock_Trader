@@ -26,6 +26,27 @@ def stock():
 def stock_info():
     """ Endpoint for processing stock info requests """
     symbol = request.form['symbol']
+    timescale = request.form['time']
     today = datetime.today()
-    yesterday = today - timedelta(days=1)
-    return Stock.get_stock_bars(symbol, TimeFrame.Hour, yesterday)
+    ts = TimeFrame.Hour
+    time_delta = timedelta(hours=12)
+    if (timescale == "Minute"):
+        ts = TimeFrame.Minute
+        time_delta = timedelta(hours=12)
+    elif (timescale == "Day"):
+        ts = TimeFrame.Day
+        
+        time_delta = timedelta(weeks=2)
+    elif (timescale == "Week"):
+        ts = TimeFrame.Day
+        time_delta = timedelta(weeks=4)
+    elif (timescale == "Month"):
+        ts = TimeFrame.Month
+        time_delta = timedelta(weeks=52)
+    elif (timescale == "Year"):
+        ts = TimeFrame.Month
+        time_delta = timedelta(weeks=52*5)
+
+    
+    yesterday = today - time_delta
+    return Stock.get_stock_bars(symbol, ts, yesterday)

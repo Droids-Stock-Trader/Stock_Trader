@@ -45,20 +45,20 @@
             </div>
             </div>
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
-              <label class="btn btn-dark active">
-                <input type="radio" name="options" id="option1" autocomplete="off" checked> 1d
+              <label class="btn btn-dark">
+                <input type="radio" name="options" id="option1" autocomplete="off" onclick='load_detail("{{stock["symbol"]}}","Minute")' checked> 1d
               </label>
               <label class="btn btn-dark">
-                <input type="radio" name="options" id="option2" autocomplete="off"> 1w
+                <input type="radio" name="options" id="option2" autocomplete="off" onclick='load_detail("{{stock["symbol"]}}","Day")'> 1w
               </label>
               <label class="btn btn-dark">
-                <input type="radio" name="options" id="option3" autocomplete="off"> 1m
+                <input type="radio" name="options" id="option3" autocomplete="off" onclick='load_detail("{{stock["symbol"]}}","Week")'> 1m
               </label>
               <label class="btn btn-dark">
-                <input type="radio" name="options" id="option4" autocomplete="off"> 1y
+                <input type="radio" name="options" id="option4" autocomplete="off" onclick='load_detail("{{stock["symbol"]}}","Month")'> 1y
               </label>
               <label class="btn btn-dark">
-                <input type="radio" name="options" id="option5" autocomplete="off"> 5y
+                <input type="radio" name="options" id="option5" autocomplete="off" onclick='load_detail("{{stock["symbol"]}}","Year")'> 5y
               </label>
             </div>
             <div class="card-footer">
@@ -72,6 +72,6 @@
       </div>
 </div>
 <script src="{{ url_for('static', filename='stock/stock_detail.js') }}"></script>
-<script>load_detail('{{stock["symbol"]}}')</script>
+<script>load_detail('{{stock["symbol"]}}',"Minute")</script>
 
 {% endblock %}
