@@ -34,12 +34,24 @@ class User(UserMixin, db.Model):
     history_list = db.relationship('History')
 
     def __repr__(self):
+        """
+      returns the username
+
+      """
         return f'<User: {self.username}>'
 
     def set_password(self, password):
+        """
+      sets the password
+
+      """
         self.password_hash = generate_password_hash(password)
 
     def check_password(self, password):
+        """
+      checks if the password is valid
+
+      """
         return check_password_hash(self.password_hash, password)
 
     @property
@@ -54,4 +66,8 @@ class User(UserMixin, db.Model):
 
 @login.user_loader
 def load_user(id):
+    """
+      returns the user id
+
+      """
     return User.query.get(int(id))

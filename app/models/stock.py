@@ -8,4 +8,8 @@ class Stock(db.Model):
     symbol = db.Column(db.String(25), index=True, unique=True)
 
     def __repr__(self):
+        """ 
+       returns the stock symbol
+
+       """
         return f'<Stock: {self.symbol}>'

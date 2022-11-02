@@ -77,7 +77,7 @@ class News(db.Model):
     def _call_news_api(url: str, params: dict, headers: dict) -> dict:
         """
         Performs the api call to the given url and Returns
-        a dictionary contining the status code, articles, api message,
+        a dictionary containing the status code, articles, api message,
         and next/previous pages.
 
         Params
