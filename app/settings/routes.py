@@ -8,6 +8,9 @@ from app.settings.forms import PreferencesForm, NotificationForm, HeadlinesForm
 @bp.route('/preferences', methods=['GET', 'POST'])
 @login_required
 def user_preferences():
+    """
+    Updates the user preferences
+       """
     if current_user.is_anonymous:
         return redirect(url_for('main.welcome'))
     form = PreferencesForm()
@@ -33,6 +36,9 @@ def user_preferences():
 @bp.route('/notifications', methods=['GET', 'POST'])
 @login_required
 def user_notifications():
+    """
+    Edit/updates user's notification settings
+       """
     if current_user.is_anonymous:
         return redirect(url_for('main.welcome'))
     form = NotificationForm()
