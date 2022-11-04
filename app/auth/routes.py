@@ -4,7 +4,8 @@ from flask_login import current_user, login_user, logout_user
 from app import db
 from app.auth import bp
 from app.auth.forms import LoginForm, RegistrationForm, ResetPasswordRequestForm
-from app.models import User
+from app.models import User, History
+
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
@@ -28,8 +29,6 @@ def login():
         return redirect(next_page)
     return render_template('auth/login.html', title='Sign In', form=form)
 
-
-
 @bp.route('/logout')
 def logout():
     """ Logout route """
@@ -46,6 +45,11 @@ def register():
     if form.validate_on_submit():
         user = User(username=form.username.data, email=form.email.data)
         user.set_password(form.password.data)
+        history = History(
+            title="Account Created",
+            description="Welcome to stock trader. Your account is now active."
+        )
+        user.store_history_record(history)
         db.session.add(user)
         db.session.commit()
         flash('You are now a registered user.')
