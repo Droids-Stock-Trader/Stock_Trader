@@ -1,7 +1,13 @@
 # Stock Trader
+Stock Trader is a web application for individuals who want an easy, real-time way to monitor the stock market and their investments. The application has the capability to provide alerts on specific stocks or companies, allows the user to make transactions, and provides links to relevant news articles to keep users up to date. The application is geared towards users who want quick, anytime, anywhere access to stock market information and the ability to easily make transactions on the go.
+
+This software is in development as a Computer Science Senior Project for the Fall 2022 semester of CECS 491 at [California State Univerisity Long Beach](https://www.csulb.edu/). 
+
+## Table of Contents
+- [Setup](#Setup)
+- [Authors](#Authors)
 
 ## Setup
-
 Make sure that you have at least python 3.8 installed. Steps 1, 2, 4, and 5 only need to be performed once (step 6 needs to be performed every time we modify the database). 
 
 1. Clone the repository
@@ -36,7 +42,7 @@ Make sure that you have at least python 3.8 installed. Steps 1, 2, 4, and 5 only
     SECRET_KEY=<your secret cryptographic key>
     NEWSCATCHER_API_KEY=<api key provided by https://newscatcherapi.com/>
     SENDGRID_API_KEY=<api key provided by https://sendgrid.com/>
-    MAIL_DEFAULT_SENDER=<a valid **PAID** for email address>
+    MAIL_DEFAULT_SENDER=<a valid PAID for email address>
     ALPACA_API_KEY=<api ID key provided by https://alpaca.markets/>
     ALPACA_SECRET_KEY=<secret key provided by https://alpaca.markets/>
     ```
@@ -50,3 +56,8 @@ Make sure that you have at least python 3.8 installed. Steps 1, 2, 4, and 5 only
     ```
     At this point the web app can be reached at `localhost:5000`. To terminate the web server, just enter `Ctrl + C` into your terminal.
 
+## Authors
+* **Jerry Aragon** - https://github.com/J-Kid-Beast
+* **Benjamin Okenwa** - https://github.com/BenjaminGreat5
+* **Jacob Pradels** - https://github.com/jacobpradels
+* **Tony Samaniego** - https://github.com/tmsoc
