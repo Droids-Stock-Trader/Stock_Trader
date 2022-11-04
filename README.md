@@ -35,6 +35,10 @@ Make sure that you have at least python 3.8 installed. Steps 1, 2, 4, and 5 only
     ```
     SECRET_KEY=<your secret cryptographic key>
     NEWSCATCHER_API_KEY=<api key provided by https://newscatcherapi.com/>
+    SENDGRID_API_KEY=<api key provided by https://sendgrid.com/>
+    MAIL_DEFAULT_SENDER=<a valid **PAID** for email address>
+    ALPACA_API_KEY=<api ID key provided by https://alpaca.markets/>
+    ALPACA_SECRET_KEY=<secret key provided by https://alpaca.markets/>
     ```
 6. build the database.
     ```
