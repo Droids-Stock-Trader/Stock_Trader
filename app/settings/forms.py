@@ -9,9 +9,10 @@ import app.validation.form_validation as validation
 
 
 
-class PreferencesForm(FlaskForm):
+class ProfileForm(FlaskForm):
     """ 
-    Form for user viewing and editting their preferences. 
+    Form for user viewing and editing their
+    profile preferences. 
     
     Extends
     -------
