@@ -35,6 +35,10 @@ class User(UserMixin, db.Model):
 
     watch_list = db.relationship('Stock', secondary=followed_stocks, backref='users')
     history_list = db.relationship('History')
+    news_settings = db.relationship(
+        'News_Settings', back_populates='user', 
+        uselist=False, lazy=True
+    )
 
     def __repr__(self):
         return f'<User: {self.username}>'

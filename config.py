@@ -25,4 +25,4 @@ class Config(object):
     ADMINS = [MAIL_DEFAULT_SENDER]
 
     # History configurtion variables
-    HISTORY_LISTING_CNT = 2
+    HISTORY_LISTING_CNT = 25
