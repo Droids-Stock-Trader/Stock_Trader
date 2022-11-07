@@ -5,6 +5,7 @@ from alpaca.data.timeframe import TimeFrameUnit
 from alpaca.trading.client import TradingClient
 from alpaca.trading.enums import AssetClass
 from datetime import datetime
+from flask import current_app
 import json
 import os
 
@@ -29,8 +30,8 @@ class Stock(db.Model):
         Unit - Timeframe for bars to cover.
         start_datetime - How far into the past the data requested should go.
         """
-        ALPACA_API_KEY = os.environ.get('ALPACA_API_KEY')
-        ALPACA_SECRET_KEY = os.environ.get('ALPACA_SECRET_KEY')
+        ALPACA_API_KEY = current_app.config["ALPACA_API_KEY"]
+        ALPACA_SECRET_KEY = current_app.config["ALPACA_SECRET_KEY"]
         client = StockHistoricalDataClient(ALPACA_API_KEY,ALPACA_SECRET_KEY)
 
         request_params = StockBarsRequest(
@@ -47,8 +48,8 @@ class Stock(db.Model):
         Method for retrieving basic information about a stock such as name,
         symbol, and status.  Not for price/history data.
         """
-        ALPACA_API_KEY = os.environ.get('ALPACA_API_KEY')
-        ALPACA_SECRET_KEY = os.environ.get('ALPACA_SECRET_KEY')
+        ALPACA_API_KEY = current_app.config["ALPACA_API_KEY"]
+        ALPACA_SECRET_KEY = current_app.config["ALPACA_SECRET_KEY"]
         trading_client = TradingClient(ALPACA_API_KEY,ALPACA_SECRET_KEY)
         asset = trading_client.get_asset(symbol_or_asset_id=symbol)
         return asset

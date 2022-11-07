@@ -39,10 +39,9 @@ def stock_info():
     time_delta = timedelta(hours=12)
     if (timescale == "Minute"):
         ts = TimeFrame.Minute
-        time_delta = timedelta(hours=12)
+        time_delta = timedelta(days=3)
     elif (timescale == "Day"):
         ts = TimeFrame.Day
-        
         time_delta = timedelta(weeks=2)
     elif (timescale == "Week"):
         ts = TimeFrame.Day

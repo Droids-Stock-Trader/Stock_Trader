@@ -22,3 +22,7 @@ class Config(object):
     MAIL_PASSWORD = os.environ.get('SENDGRID_API_KEY')
     MAIL_DEFAULT_SENDER = os.environ.get('MAIL_DEFAULT_SENDER')
     ADMINS = [MAIL_DEFAULT_SENDER]
+
+    # Stock API keys
+    ALPACA_API_KEY = os.environ.get('ALPACA_API_KEY')
+    ALPACA_SECRET_KEY = os.environ.get('ALPACA_SECRET_KEY')
