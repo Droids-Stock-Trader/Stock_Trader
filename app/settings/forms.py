@@ -65,7 +65,7 @@ class PreferencesForm(FlaskForm):
         ------
         phone_number -- the phone number to validate.
         """
-        if current_user.phone_num != phone_number.data:
+        if current_user.phone_num != phone_number.data and phone_number.data:
             validation.validate_phone_number(phone_number)
 
 class NotificationForm(FlaskForm):

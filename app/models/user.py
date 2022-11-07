@@ -1,7 +1,7 @@
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import db, login
-
+import datetime
 
 followed_stocks = db.Table('followed_stocks',
     db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
@@ -23,7 +23,7 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(_PASSWORD_HASH_CHAR_LENGTH))
 
     phone_num = db.Column(db.String(PHONE_NUM_CHAR_LENGTH))
-    dob = db.Column(db.DateTime)
+    dob = db.Column(db.DateTime, default=datetime.date(1,1,1))
     contact_pref = db.Column(db.Integer, default=1)
 
     account_change_notify = db.Column(db.Boolean, default=True)
