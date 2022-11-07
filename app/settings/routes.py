@@ -4,7 +4,7 @@ from flask_login import current_user, login_required
 from app import db
 from app.settings import bp
 from app.settings.forms import ProfileForm, NotificationForm, HeadlinesForm
-from app.models import History
+from app.models import History, News_Settings
 
 
 @bp.route('/profile', methods=['GET', 'POST'])
@@ -39,7 +39,7 @@ def user_preferences():
             )
             current_user.store_history_record(record)
             db.session.commit()
-        flash("User profile have been saved")
+            flash("User profile have been saved")
     # populates the profile page with the current users attributes
     form.username.data = current_user.username
     form.phone_number.data = current_user.phone_num
@@ -81,7 +81,7 @@ def user_notifications():
             )
             current_user.store_history_record(record)
             db.session.commit()
-        flash('Notification setting have been saved.')
+            flash('Notification setting have been saved.')
     # populates the notification page with the current user notification settings
     form.account_change.data = current_user.account_change_notify
     form.holds.data = current_user.holds_notify
@@ -95,7 +95,46 @@ def user_notifications():
 @bp.route('/headlines', methods=['GET', 'POST'])
 @login_required
 def news_settings():
+    # Check to see if the current user does not has a news settings 
+    # table already assigned. Assings a table if none exits.
+    if current_user.news_settings == None:
+        current_user.news_settings = News_Settings()
+        db.session.commit()
+    
+    ns = current_user.news_settings
     form = HeadlinesForm()
+
+    if form.validate_on_submit():
+        # get the news settings changes
+        changes_made = _news_changes(form)
+        # if changes were made to 1 or more settings
+        if len(changes_made) > 0:
+            record = History(
+                title='News Settings Updated',
+                description='The following news settings were changed: ' +
+                    f'{_format_changes(changes_made)}.'
+            )
+            current_user.store_history_record(record)
+            db.session.commit()
+            flash("News settings updated.")
+
+    form.news.data = ns.news
+    form.sports.data = ns.sports
+    form.tech.data = ns.tech
+    form.world.data = ns.world
+    form.finance.data = ns.finance
+    form.politics.data = ns.politics
+    form.business.data = ns.business
+    form.economics.data = ns.economics
+    form.entertainment.data = ns.entertainment
+    form.beauty.data = ns.beauty
+    form.travel.data = ns.travel
+    form.music.data = ns.music
+    form.food.data = ns.food
+    form.science.data = ns.science
+    form.gaming.data = ns.gaming
+    form.energy.data = ns.energy
+
     return render_template(
         'settings/news_settings.html', title='News Settings', form=form)
 
@@ -105,6 +144,10 @@ def _profile_changed(form) -> list:
     Generates a list of user attributes that
     have been changed within the settings profile
     page.
+
+    Params
+    ------
+    form - The profile settings form containing the updated data.
     """
     changes = []
     if current_user.username != form.username.data:
@@ -125,6 +168,10 @@ def _notification_changes(form) -> list:
     Generates a list of user notification settings
     that have been changed within the notifications
     settings page.
+
+    Params
+    ------
+    form - The notification settings form containing the updated data.
     """
     changes = []
     if current_user.account_change_notify != form.account_change.data:
@@ -136,10 +183,78 @@ def _notification_changes(form) -> list:
     return changes
 
 
+def _news_changes(form) -> list:
+    """
+    Generates a list of user news settings that
+    have been changed within the news settings page.
+    If a change was made, the current users attribute
+    filed is updated with the new form value.
+
+    Params
+    ------
+    form - The news settings form containing the updated data.
+    """
+    ns = current_user.news_settings
+    changes = []
+    if ns.news != form.news.data:
+        ns.news = form.news.data
+        changes.append("News")
+    if ns.sports != form.sports.data:
+        ns.sports = form.sports.data
+        changes.append("Sports")
+    if ns.tech != form.tech.data:
+        ns.tech = form.tech.data
+        changes.append("Tech")
+    if ns.world != form.world.data:
+        ns.world = form.world.data
+        changes.append("World")
+    if ns.finance != form.finance.data:
+        ns.finance = form.finance.data
+        changes.append("Finance")
+    if ns.politics != form.politics.data:
+        ns.politics = form.politics.data
+        changes.append("Politics")
+    if ns.business != form.business.data:
+        ns.business = form.business.data
+        changes.append("Business")
+    if ns.economics != form.economics.data:
+        ns.economics = form.economics.data
+        changes.append("Econimics")
+    if ns.entertainment != form.entertainment.data:
+        ns.entertainment = form.entertainment.data
+        changes.append("Entertainment")
+    if ns.beauty != form.beauty.data:
+        ns.beauty = form.beauty.data
+        changes.append("Beauty")
+    if ns.travel != form.travel.data:
+        ns.travel = form.travel.data
+        changes.append("Travel")
+    if ns.music != form.music.data:
+        ns.music = form.music.data
+        changes.append("Music")
+    if ns.food != form.food.data:
+        ns.food = form.food.data
+        changes.append("Food")
+    if ns.science != form.science.data:
+        ns.science = form.science.data
+        changes.append("Science")
+    if ns.gaming != form.gaming.data:
+        ns.gaming = form.gaming.data
+        changes.append("Gaming")
+    if ns.energy != form.energy.data:
+        ns.energy = form.energy.data
+        changes.append("Energy")    
+    return changes
+
+
 def _format_changes(changes) -> str:
     """
     Formats a list of string items to be separated by
     commas, an 'and', or both.
+
+    Params
+    ------
+    changes - List of string items to format.
     """
     if len(changes) == 0:
         return ""
