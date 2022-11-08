@@ -1,6 +1,9 @@
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import db, login
+from time import time
+import jwt
+from flask import current_app
 
 
 followed_stocks = db.Table('followed_stocks',
@@ -32,6 +35,10 @@ class User(UserMixin, db.Model):
 
     watch_list = db.relationship('Stock', secondary=followed_stocks, backref='users')
     history_list = db.relationship('History')
+    news_settings = db.relationship(
+        'News_Settings', back_populates='user', 
+        uselist=False, lazy=True
+    )
 
     def __repr__(self):
         return f'<User: {self.username}>'
@@ -42,6 +49,16 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+    def store_history_record(self, record) -> None:
+        """
+        Stores a history record to the User. 
+        Params
+        ------
+        record - The History item to add to the users
+        history_list.
+        """
+        self.history_list.append(record)
+
     @property
     def portfolio_corporate_names(self) -> list:
         """
@@ -50,6 +67,27 @@ class User(UserMixin, db.Model):
         watch list. 
         """
         return [stock.corporate_name for stock in self.watch_list]
+
+    # Returns a JWT token as a string, which is 
+    # generated directly by the jwt.encode() function
+    def get_reset_password_token(self, expires_in=600):
+        return jwt.encode(
+            {'reset_password': self.id, 'exp': time() + expires_in},
+            current_app.config['SECRET_KEY'], algorithm='HS256')
+
+    # This method takes a token and attempts to decode it. 
+    # If the token cannot be validated, an exception will be raised, 
+    # which is caught and 'none' is returned. If the token is valid, then the 
+    # value of the reset_password key from the token's payload is 
+    # the ID of the user, which can load the user and return it.
+    @staticmethod
+    def verify_reset_password_token(token):
+        try:
+            id = jwt.decode(token, current_app.config['SECRET_KEY'],
+                            algorithms=['HS256'])['reset_password']
+        except:
+            return
+        return User.query.get(id)
 
 
 @login.user_loader
