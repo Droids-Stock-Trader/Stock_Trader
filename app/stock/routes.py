@@ -10,16 +10,13 @@ from alpaca.data.timeframe import TimeFrame
 from datetime import datetime, timedelta
 # from app.stock.forms import LoginForm, RegistrationForm, ResetPasswordRequestForm
 
+@login_required
 @bp.route('/detail', methods=['GET', 'POST'])
 def stock():
     """ Stock Info Route """
-    # If user is logged in here, nothing to do, return to index.
-    if current_user.is_authenticated:
-        symbol = request.args.get('stock')
-        asset = Stock.get_stock_info(symbol).dict()
-        print(asset)
-        return render_template('stock/stock.html', title=f'{symbol} Details', stock=asset)
-    return redirect(url_for('main.welcome'))
+    symbol = request.args.get('stock')
+    asset = Stock.get_stock_info(symbol).dict()
+    return render_template('stock/stock.html', title=f'{symbol} Details', stock=asset)
 
 @bp.route('/stock_info', methods=['POST'])
 @login_required

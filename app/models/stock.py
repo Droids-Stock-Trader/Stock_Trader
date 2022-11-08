@@ -3,11 +3,9 @@ from alpaca.data.requests import StockBarsRequest
 from alpaca.data.historical.stock import StockHistoricalDataClient
 from alpaca.data.timeframe import TimeFrameUnit
 from alpaca.trading.client import TradingClient
-from alpaca.trading.enums import AssetClass
 from datetime import datetime
 from flask import current_app
 import json
-import os
 
 class Stock(db.Model):
     __tablename__ = 'stock'
@@ -39,7 +37,6 @@ class Stock(db.Model):
                             timeframe=Unit,
                             start=start_datetime)
         bars = client.get_stock_bars(request_params)
-        bars_df = bars.df
         return json.loads(bars.json())
 
     @staticmethod

@@ -1,6 +1,4 @@
 
-let graph_prices = null;
-let layout = null;
 
 
 function load_detail(stock_symbol, timeframe) {
@@ -11,7 +9,6 @@ function load_detail(stock_symbol, timeframe) {
     }).done(function (data) {
 
         raw_data = data['data'][stock_symbol]
-        console.log(raw_data)
         opened = []
         close_arr = []
         high = []
@@ -63,7 +60,6 @@ function load_detail(stock_symbol, timeframe) {
         var close_price = "Close price : " + raw_data.slice(-1)[0]['close']
         $('#open_price').text(open_price);
         $('#close_price').text(close_price);
-        console.log(open_price)
 
     }).fail(function () {
         console.log("Failed AJAX Call");
