@@ -2,7 +2,7 @@
     <ul class="nav nav-pills flex-column mb-auto">
         <b style="padding: 0.5rem 1rem;">User Settings</b>
         <li class="nav-item">
-            <a id="sb-pref" href="{{ url_for('settings.user_preferences') }}" class="nav-link link-dark">User Preferences</a>
+            <a id="sb-profile" href="{{ url_for('settings.user_preferences') }}" class="nav-link link-dark">Profile</a>
         </li>
         <li class="nav-item">
             <a id="sb-notify" href="{{ url_for('settings.user_notifications') }}" class="nav-link link-dark">Notifications</a>
@@ -11,6 +11,11 @@
         <b style="padding: 0.5rem 1rem;">Brokers</b>
         <li class="nav-item">
             <a id="sb-pref" href="#" class="nav-link link-dark">Add Brokers</a>
+        </li>
+        <hr>
+        <b style="padding: 0.5rem 1rem;">Media</b>
+        <li class="nav-item">
+            <a id="sb-headlines" href="{{ url_for('settings.news_settings') }}" class="nav-link link-dark">Headlines</a>
         </li>
     </ul>
 </div>

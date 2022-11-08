@@ -2,6 +2,7 @@ from requests import request
 from datetime import datetime as dt
 from app import db
 from flask import current_app
+from flask_login import current_user
 
 
 class News(db.Model):
@@ -42,6 +43,7 @@ class News(db.Model):
             "q": formatted_query,
             "countries": "US",
             "lang": "en",
+            "topic": current_user.news_settings.topics,
             "sort_by": "date",
             "page_size": current_app.config["HEADLINES_ARTICLE_CNT"],
             "to_rank": 10000,
@@ -66,7 +68,7 @@ class News(db.Model):
         params = {
             "countries": "US",
             "lang": "en",
-            "topic": ["finance", "business", "economics"],
+            "topic": current_user.news_settings.topics,
             "page_size": current_app.config["HEADLINES_ARTICLE_CNT"],
             "page": page,
         }
@@ -93,8 +95,8 @@ class News(db.Model):
         # If the call was successful, extract the acticles from the response
         # into a list, parses the published dates into python datatime objects
         # and calculates the next/previous pagination numbers.
-        if status_code == 200:
-            response_dict = response.json()
+        response_dict = response.json()
+        if status_code == 200 and int(response_dict['total_hits']) > 0:
             articles = response_dict["articles"]
             for i in range(len(articles)):
                 articles[i]["published_date"] = dt.strptime(
@@ -108,9 +110,14 @@ class News(db.Model):
             next_url = current_page + 1 if current_page < total_pages else None
         # if the response has an error, return an empty list along
         # with the error message.
+        elif int(response_dict['total_hits']) == 0:
+            articles = []
+            message = 'No relavent articles found. Try broadening your settings news topics'
+            prev_url = None
+            next_url = None
         else:
             articles = []
-            message = response.json()["message"]
+            message = response_dict["message"]
             prev_url = None
             next_url = None
 
