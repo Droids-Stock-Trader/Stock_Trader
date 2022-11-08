@@ -110,9 +110,9 @@ class News(db.Model):
             next_url = current_page + 1 if current_page < total_pages else None
         # if the response has an error, return an empty list along
         # with the error message.
-        elif int(response_dict['total_hits']) == 0:
+        elif status_code == 200 and int(response_dict['total_hits']) == 0:
             articles = []
-            message = 'No relavent articles found. Try broadening your settings news topics'
+            message = 'No relevent articles found. Try broadening the settings news topics'
             prev_url = None
             next_url = None
         else:
