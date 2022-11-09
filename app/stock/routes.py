@@ -10,8 +10,8 @@ from alpaca.data.timeframe import TimeFrame
 from datetime import datetime, timedelta
 # from app.stock.forms import LoginForm, RegistrationForm, ResetPasswordRequestForm
 
-@login_required
 @bp.route('/detail', methods=['GET', 'POST'])
+@login_required
 def stock():
     """ Stock Info Route """
     symbol = request.args.get('stock')
