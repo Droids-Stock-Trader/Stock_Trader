@@ -48,6 +48,9 @@ def create_app(config_class=Config):
 
     from app.media import bp as media_bp
     app.register_blueprint(media_bp, url_prefix='/media')
+
+    from app.stock import bp as stock_bp
+    app.register_blueprint(stock_bp, url_prefix='/stock')
     
     return app
 
