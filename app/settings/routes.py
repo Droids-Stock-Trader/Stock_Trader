@@ -95,8 +95,14 @@ def user_notifications():
 @bp.route('/headlines', methods=['GET', 'POST'])
 @login_required
 def news_settings():
+    """
+    Controller route that edits the user's 
+    news settings.
+
+    URL: settings/headlines
+    """
     # Check to see if the current user does not has a news settings 
-    # table already assigned. Assings a table if none exits.
+    # table already assigned. Assigns a table if none exits.
     if current_user.news_settings == None:
         current_user.news_settings = News_Settings()
         db.session.commit()
@@ -117,7 +123,7 @@ def news_settings():
             current_user.store_history_record(record)
             db.session.commit()
             flash("News settings updated.")
-
+    # updates the form to the current user news settings
     form.news.data = ns.news
     form.sports.data = ns.sports
     form.tech.data = ns.tech
@@ -219,7 +225,7 @@ def _news_changes(form) -> list:
         changes.append("Business")
     if ns.economics != form.economics.data:
         ns.economics = form.economics.data
-        changes.append("Econimics")
+        changes.append("Economics")
     if ns.entertainment != form.entertainment.data:
         ns.entertainment = form.entertainment.data
         changes.append("Entertainment")
