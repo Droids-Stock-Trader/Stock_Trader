@@ -2,7 +2,7 @@ from flask import current_app, render_template, abort, flash, request
 from flask_login import current_user, login_required
 from app import db
 from app.media import bp
-from app.models import News
+from app.models import News, News_Settings
 
 
 @bp.route("/headlines")
@@ -12,6 +12,9 @@ def headlines():
     Presents news that is relevant to user's portfolio.
     If user has no stocks then general financial news is displayed
     """
+    if current_user.news_settings == None:
+        current_user.news_settings = News_Settings()
+        db.session.commit()
     # gets the corporate names of all the stocks within
     # the current users portfolio in list form
     stock_names = current_user.portfolio_corporate_names

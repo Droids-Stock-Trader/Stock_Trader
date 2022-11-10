@@ -15,21 +15,13 @@ def user_preferences():
 
     URL: /settings/profile
     """
-    if current_user.is_anonymous:
-        return redirect(url_for('main.welcome'))
     form = ProfileForm()
-
     if form.validate_on_submit():
-        # determines what attributes have been changed
+        # determines what attributes have been changed and
+        # assings the changed values to the current users db
         changes_made = _profile_changed(form)
         # if changes were made
         if len(changes_made) > 0:
-            # updates the user profile
-            current_user.username = form.username.data
-            current_user.phone_num = form.phone_number.data
-            current_user.email = form.email.data
-            current_user.dob = form.dob.data
-            current_user.contact_pref = int(form.contact_preference.data)
             # generates the account history record
             # and saves it to the user profile
             record = History(
@@ -41,12 +33,7 @@ def user_preferences():
             db.session.commit()
             flash("User profile have been saved")
     # populates the profile page with the current users attributes
-    form.username.data = current_user.username
-    form.phone_number.data = current_user.phone_num
-    form.email.data = current_user.email
-    form.dob.data = current_user.dob
-    form.contact_preference.data = str(current_user.contact_pref)
-
+    _populate_profile_form(form)
     return render_template(
         'settings/preferences.html', title='User Profile', form=form)
 
@@ -60,18 +47,12 @@ def user_notifications():
 
     URL: settings/notifications
     """
-    if current_user.is_anonymous:
-        return redirect(url_for('main.welcome'))
     form = NotificationForm()
-
     if form.validate_on_submit():
-        # generates a list of notification settings that have been changed.
+        # generates a list of notification settings that have been changed
+        # and updates the user notification settings.
         changes_made = _notification_changes(form)
         if len(changes_made) > 0:
-            # Updates the user attributes
-            current_user.account_change_notify = form.account_change.data
-            current_user.holds_notify = form.holds.data
-            current_user.watchlist_notify = form.watchlist.data
             # Creates a record of what was changed and saves the record 
             # to the users account history.
             record = History(
@@ -83,10 +64,7 @@ def user_notifications():
             db.session.commit()
             flash('Notification setting have been saved.')
     # populates the notification page with the current user notification settings
-    form.account_change.data = current_user.account_change_notify
-    form.holds.data = current_user.holds_notify
-    form.watchlist.data = current_user.watchlist_notify
-
+    _populate_notification_form(form)
     return render_template(
         'settings/notifications.html', 
         title='Notification Settings', form=form)
@@ -95,17 +73,21 @@ def user_notifications():
 @bp.route('/headlines', methods=['GET', 'POST'])
 @login_required
 def news_settings():
+    """
+    Controller route that edits the user's 
+    news settings.
+
+    URL: settings/headlines
+    """
     # Check to see if the current user does not has a news settings 
-    # table already assigned. Assings a table if none exits.
+    # table already assigned. Assigns a table if none exits.
     if current_user.news_settings == None:
         current_user.news_settings = News_Settings()
-        db.session.commit()
-    
-    ns = current_user.news_settings
+        db.session.commit()    
     form = HeadlinesForm()
-
     if form.validate_on_submit():
-        # get the news settings changes
+        # get the news settings changes and
+        # assigns the form value to the users db
         changes_made = _news_changes(form)
         # if changes were made to 1 or more settings
         if len(changes_made) > 0:
@@ -117,33 +99,18 @@ def news_settings():
             current_user.store_history_record(record)
             db.session.commit()
             flash("News settings updated.")
-
-    form.news.data = ns.news
-    form.sports.data = ns.sports
-    form.tech.data = ns.tech
-    form.world.data = ns.world
-    form.finance.data = ns.finance
-    form.politics.data = ns.politics
-    form.business.data = ns.business
-    form.economics.data = ns.economics
-    form.entertainment.data = ns.entertainment
-    form.beauty.data = ns.beauty
-    form.travel.data = ns.travel
-    form.music.data = ns.music
-    form.food.data = ns.food
-    form.science.data = ns.science
-    form.gaming.data = ns.gaming
-    form.energy.data = ns.energy
-
+    # populates the form to the current users news settings
+    _populate_news_form(form)
     return render_template(
         'settings/news_settings.html', title='News Settings', form=form)
 
 
-def _profile_changed(form) -> list:
+def _profile_changed(form: ProfileForm) -> list:
     """
     Generates a list of user attributes that
     have been changed within the settings profile
-    page.
+    page. If the value has changed, the form value 
+    is assigned to the current users profile settings.
 
     Params
     ------
@@ -152,22 +119,32 @@ def _profile_changed(form) -> list:
     changes = []
     if current_user.username != form.username.data:
         changes.append("Username")
+        current_user.username = form.username.data
     if current_user.phone_num != form.phone_number.data:
         changes.append("Phone Number")
+        current_user.phone_num = form.phone_number.data
     if current_user.email != form.email.data:
         changes.append("Email")
-    if current_user.dob.date() != form.dob.data:
+        current_user.email = form.email.data
+    if current_user.dob == None:
+        if form.dob.data != None:
+            changes.append("Date of Birth")
+            current_user.dob = form.dob.data
+    elif current_user.dob.date() != form.dob.data:
         changes.append("Date of Birth")
+        current_user.dob = form.dob.data
     if current_user.contact_pref != int(form.contact_preference.data):
         changes.append("Contact Preference")
+        current_user.contact_pref = int(form.contact_preference.data)
     return changes
 
 
-def _notification_changes(form) -> list:
+def _notification_changes(form: NotificationForm) -> list:
     """
     Generates a list of user notification settings
     that have been changed within the notifications
-    settings page.
+    settings page. If the setting has changed, the form
+    value is assinged to the users notification settings.
 
     Params
     ------
@@ -176,19 +153,22 @@ def _notification_changes(form) -> list:
     changes = []
     if current_user.account_change_notify != form.account_change.data:
         changes.append("Account Profile")
+        current_user.account_change_notify = form.account_change.data
     if current_user.holds_notify != form.holds.data:
         changes.append("Holdings")
+        current_user.holds_notify = form.holds.data
     if current_user.watchlist_notify != form.watchlist.data:
         changes.append("Account Portfolio")
+        current_user.watchlist_notify = form.watchlist.data
     return changes
 
 
-def _news_changes(form) -> list:
+def _news_changes(form: HeadlinesForm) -> list:
     """
     Generates a list of user news settings that
     have been changed within the news settings page.
     If a change was made, the current users attribute
-    filed is updated with the new form value.
+    is updated with the new form value.
 
     Params
     ------
@@ -219,7 +199,7 @@ def _news_changes(form) -> list:
         changes.append("Business")
     if ns.economics != form.economics.data:
         ns.economics = form.economics.data
-        changes.append("Econimics")
+        changes.append("Economics")
     if ns.entertainment != form.entertainment.data:
         ns.entertainment = form.entertainment.data
         changes.append("Entertainment")
@@ -247,7 +227,65 @@ def _news_changes(form) -> list:
     return changes
 
 
-def _format_changes(changes) -> str:
+def _populate_profile_form(form: ProfileForm) -> None:
+    """
+    Populates the given ProfileForm with the 
+    current users news settings.
+
+    Params
+    ------
+    form - The ProfileForm to populate.
+    """
+    form.username.data = current_user.username
+    form.phone_number.data = current_user.phone_num
+    form.email.data = current_user.email
+    form.dob.data = current_user.dob
+    form.contact_preference.data = str(current_user.contact_pref)
+
+
+def _populate_notification_form(form: NotificationForm) -> None:
+    """
+    Populates the given NotificationForm with the 
+    current users news settings.
+
+    Params
+    ------
+    form - The NotificationForm to populate.
+    """
+    form.account_change.data = current_user.account_change_notify
+    form.holds.data = current_user.holds_notify
+    form.watchlist.data = current_user.watchlist_notify
+
+
+def _populate_news_form(form: HeadlinesForm) -> None:
+    """
+    Populates the given HeadlinesForm with the 
+    current users news settings.
+
+    Params
+    ------
+    form - The HeadlinesForm to populate.
+    """
+    ns = current_user.news_settings
+    form.news.data = ns.news
+    form.sports.data = ns.sports
+    form.tech.data = ns.tech
+    form.world.data = ns.world
+    form.finance.data = ns.finance
+    form.politics.data = ns.politics
+    form.business.data = ns.business
+    form.economics.data = ns.economics
+    form.entertainment.data = ns.entertainment
+    form.beauty.data = ns.beauty
+    form.travel.data = ns.travel
+    form.music.data = ns.music
+    form.food.data = ns.food
+    form.science.data = ns.science
+    form.gaming.data = ns.gaming
+    form.energy.data = ns.energy
+
+
+def _format_changes(changes: list) -> str:
     """
     Formats a list of string items to be separated by
     commas, an 'and', or both.
