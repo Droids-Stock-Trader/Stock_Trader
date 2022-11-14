@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<div class="container">
+    <h1>Stock Not Found</h1>
+    <p>Please make sure the stock you are looking for exists!</p>
+    <p><a href="{{ url_for('stock.stock') }}">Back</a></p>
+</div>
+
+{% endblock %}
