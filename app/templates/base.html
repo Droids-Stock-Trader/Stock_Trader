@@ -38,9 +38,6 @@
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('media.headlines') }}">Headlines</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('history.account_history') }}">Account History</a>
-          </li>
           {% endif %}
         </ul>
         <ul class="navbar-nav ms-auto">
@@ -49,11 +46,29 @@
             <a class="nav-link" href="{{ url_for('auth.login') }}">Login</a>
           </li>
           {% else %}
-          <li>
-            <a class="nav-link" href="{{ url_for('settings.user_preferences') }}"><i class="bi bi-gear"></i></a>
-          </li>
-          <li>
-            <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
+          <form class="d-flex me-3">
+            <div class="input-group">
+              <input class="form-control" type="text" placeholder="Search">
+              <button class="btn btn-outline-info dropdown-toggle" data-bs-toggle="dropdown" type="button">Search</button>
+              <ul class="dropdown-menu">
+                <li><a href="#" class="dropdown-item">Symbol</a></li>
+                <li><a href="#" class="dropdown-item">Corporate Name</a></li>
+              </ul>
+            </div>
+          </form>
+          <li class="nav-item dropdown">
+            <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"><i class="bi bi-person-circle"></i></a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li>
+                <a class="dropdown-item" href="{{ url_for('settings.user_preferences') }}"><i class="bi bi-gear"></i></a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{{ url_for('history.account_history') }}">Account History</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{{ url_for('auth.logout') }}">Logout</a>
+              </li>
+            </ul>
           </li>
           {% endif %}
         </ul>
