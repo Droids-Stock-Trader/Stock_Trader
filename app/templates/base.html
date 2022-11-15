@@ -48,11 +48,11 @@
           {% else %}
           <form class="d-flex me-3">
             <div class="input-group">
-              <input class="form-control" type="text" placeholder="Search">
+              <input id="search_bar" class="form-control" type="text" placeholder="Search">
               <button class="btn btn-outline-info dropdown-toggle" data-bs-toggle="dropdown" type="button">Search</button>
               <ul class="dropdown-menu">
-                <li><a href="#" class="dropdown-item">Symbol</a></li>
-                <li><a href="#" class="dropdown-item">Corporate Name</a></li>
+                <li><a id="symbol_link" href="#" onclick="sym_search()" class="dropdown-item">Symbol</a></li>
+                <li><a id="name_link" href="#" onclick="name_search()" class="dropdown-item">Corporate Name</a></li>
               </ul>
             </div>
           </form>
@@ -60,7 +60,7 @@
             <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"><i class="bi bi-person-circle"></i></a>
             <ul class="dropdown-menu dropdown-menu-end">
               <li>
-                <a class="dropdown-item" href="{{ url_for('settings.user_preferences') }}"><i class="bi bi-gear"></i></a>
+                <a class="dropdown-item" href="{{ url_for('settings.user_preferences') }}">Settings</a>
               </li>
               <li>
                 <a class="dropdown-item" href="{{ url_for('history.account_history') }}">Account History</a>
@@ -107,5 +107,18 @@
   </div>
 
 </body>
+
+<script>
+  function sym_search() {
+    let sym = $('#search_bar').val().toUpperCase();
+    if (sym != "") {
+      $('#symbol_link').attr("href", "{{ url_for('stock.stock') }}?stock=" + sym)
+    }
+  }
+
+  function name_search() {
+    console.log('Name Search')
+  }
+</script>
 
 </html>
