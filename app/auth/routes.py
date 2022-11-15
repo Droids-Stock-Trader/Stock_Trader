@@ -3,7 +3,7 @@ from werkzeug.urls import url_parse
 from flask_login import current_user, login_user, logout_user
 from app import db
 from app.auth import bp
-from app.auth.forms import LoginForm, RegistrationForm, ResetPasswordRequestForm, ResetPasswordForm
+from app.auth.forms import LoginForm, RegistrationForm, ResetPasswordRequestForm, ResetPasswordForm, ResetPasswordFormPreferences
 from app.models import User, History
 from app.emails.email import send_password_reset_email
 
@@ -83,3 +83,20 @@ def reset_password(token):
         flash('Your password has been reset.')
         return redirect(url_for('auth.login'))
     return render_template('auth/reset_password.html', title='Reset Password', form=form)
+
+@bp.route('/reset_password_preferences', methods=['GET', 'POST'])
+def reset_password_preferences():
+    user = current_user
+    if not user:
+        return redirect(url_for('main.index'))
+    form = ResetPasswordFormPreferences()
+    if form.validate_on_submit():
+        if (user.check_password(form.oldPassword.data)):
+            user.set_password(form.password.data)
+            db.session.commit()
+            flash('Your password has been reset.')
+            return redirect(url_for('main.index'))
+        flash('Incorrect Password.')
+        return render_template('auth/reset_password_preferences.html', title='Reset Password', form=form)
+    return render_template('auth/reset_password_preferences.html', title='Reset Password', form=form)
+
