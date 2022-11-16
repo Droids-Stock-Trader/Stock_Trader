@@ -59,9 +59,9 @@ Make sure that you have at least python 3.8 installed. Steps 1, 2, 4, and 5 only
 
 
 ## API
-- [Alpaca](#https://alpaca.markets): Trade with algorithms, connect with apps, and build services with our easy to use APIs
-- [Newscatcher](#https://newscatcherapi.com/): Search multi-language worldwide news articles published online with NewsCatcher's News API
-- [Sendgrid](#https://sendgrid.com/): A cloud-based service that assists businesses with email delivery.
+- [Alpaca](https://alpaca.markets): Trade with algorithms, connect with apps, and build services with our easy to use APIs. https://alpaca.markets
+- [Newscatcher](https://newscatcherapi.com): Search multi-language worldwide news articles published online with NewsCatcher's News API. https://newscatcherapi.com
+- [Sendgrid](https://sendgrid.com): A cloud-based service that assists businesses with email delivery. https://sendgrid.com
 
 ## Authors
 * **Jerry Aragon** - https://github.com/J-Kid-Beast
