@@ -39,6 +39,7 @@ class User(UserMixin, db.Model):
         'News_Settings', back_populates='user', 
         uselist=False, lazy=True
     )
+    alpaca_access_code = db.Column(db.String(40), index=True, unique=True)
 
     def __repr__(self):
         return f'<User: {self.username}>'
@@ -48,6 +49,9 @@ class User(UserMixin, db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+    
+    def set_alpaca_access_code(self, token):
+        self.alpaca_access_code = token
 
     def store_history_record(self, record) -> None:
         """

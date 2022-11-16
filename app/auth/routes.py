@@ -1,11 +1,15 @@
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash, request, current_app
 from werkzeug.urls import url_parse
-from flask_login import current_user, login_user, logout_user
+from flask_login import current_user, login_user, logout_user, login_required
 from app import db
 from app.auth import bp
 from app.auth.forms import LoginForm, RegistrationForm, ResetPasswordRequestForm, ResetPasswordForm
 from app.models import User, History
 from app.emails.email import send_password_reset_email
+import random
+import string
+import urllib.parse
+import requests
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
@@ -83,3 +87,38 @@ def reset_password(token):
         flash('Your password has been reset.')
         return redirect(url_for('auth.login'))
     return render_template('auth/reset_password.html', title='Reset Password', form=form)
+
+
+@bp.route(('/connect_alpaca'), methods=['GET'])
+@login_required
+def connect_alpaca():
+    BASE_URL = "http://127.0.0.1:5000"
+    CLIENT_ID = current_app.config["ALPACA_CLIENT_ID"]
+    RANDOM_STATE = ''.join(random.choice(string.ascii_lowercase) for i in range(15))
+    UNENCODED_REDIRECT_URI = BASE_URL + url_for('auth.alpaca_code')
+    REDIRECT_URI = urllib.parse.quote_plus(UNENCODED_REDIRECT_URI)
+    URI = f"https://app.alpaca.markets/oauth/authorize?response_type=code&client_id={CLIENT_ID}&redirect_uri={REDIRECT_URI}&scope=account:write%20trading"
+    return redirect(URI)
+
+@bp.route(('/alpaca_oauth'), methods=['GET'])
+@login_required
+def alpaca_code():
+    CLIENT_ID = current_app.config["ALPACA_CLIENT_ID"]
+    SECRET_ID = current_app.config["ALPACA_SECRET_ID"]
+    BASE_URL = "http://127.0.0.1:5000"
+    UNENCODED_REDIRECT_URI = BASE_URL + url_for('auth.alpaca_code')
+    REDIRECT_URI = urllib.parse.quote_plus(UNENCODED_REDIRECT_URI)
+    code = request.args.get('code')
+    URI = "https://api.alpaca.markets/oauth/token"
+    data = {
+        'grant_type' : 'authorization_code',
+        'code' : code,
+        'client_id' : CLIENT_ID,
+        'client_secret' : SECRET_ID,
+        'redirect_uri' : UNENCODED_REDIRECT_URI
+    }
+    response = requests.post(URI,data=data,headers={"ContentType":"application/x-www-form-urlencoded"}).json()
+    access_token = response['access_token']
+    current_user.set_alpaca_access_code(access_token)
+    db.session.commit()
+    return redirect(url_for('main.index'))
