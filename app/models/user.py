@@ -52,6 +52,9 @@ class User(UserMixin, db.Model):
     
     def set_alpaca_access_code(self, token):
         self.alpaca_access_code = token
+    
+    def get_alpaca_access_code(self):
+        return self.alpaca_access_code
 
     def store_history_record(self, record) -> None:
         """

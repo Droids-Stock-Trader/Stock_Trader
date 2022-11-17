@@ -1,6 +1,10 @@
 from datetime import datetime as dt
-from flask import render_template, url_for, redirect, flash
+import random
+import string
+from flask import current_app, render_template, url_for, redirect, flash, request
 from flask_login import current_user, login_required
+import requests
+import urllib.parse
 from app import db
 from app.settings import bp
 from app.settings.forms import ProfileForm, NotificationForm, HeadlinesForm
@@ -68,6 +72,63 @@ def user_notifications():
     return render_template(
         'settings/notifications.html', 
         title='Notification Settings', form=form)
+
+
+@bp.route('/brokers', methods=['GET'])
+@login_required
+def brokers_settings():
+    """
+    Controller route that edits the user's
+    broker settings.
+    
+    URL: settings/brokers
+    """
+    if current_user.get_alpaca_access_code():
+        connected = True
+    else:
+        connected = False
+    return render_template('settings/brokers.html',title="Broker settings",connected=connected, code=current_user.get_alpaca_access_code())
+
+@bp.route(('/connect_alpaca'), methods=['GET'])
+@login_required
+def connect_alpaca():
+    BASE_URL = "http://127.0.0.1:5000"
+    CLIENT_ID = current_app.config["ALPACA_CLIENT_ID"]
+    RANDOM_STATE = ''.join(random.choice(string.ascii_lowercase) for i in range(15))
+    UNENCODED_REDIRECT_URI = BASE_URL + url_for('settings.alpaca_code')
+    REDIRECT_URI = urllib.parse.quote_plus(UNENCODED_REDIRECT_URI)
+    URI = f"https://app.alpaca.markets/oauth/authorize?response_type=code&client_id={CLIENT_ID}&redirect_uri={REDIRECT_URI}&scope=account:write%20trading"
+    return redirect(URI)
+
+@bp.route(('/alpaca_oauth'), methods=['GET'])
+@login_required
+def alpaca_code():
+    CLIENT_ID = current_app.config["ALPACA_CLIENT_ID"]
+    SECRET_ID = current_app.config["ALPACA_SECRET_ID"]
+    BASE_URL = "http://127.0.0.1:5000"
+    UNENCODED_REDIRECT_URI = BASE_URL + url_for('settings.alpaca_code')
+    REDIRECT_URI = urllib.parse.quote_plus(UNENCODED_REDIRECT_URI)
+    code = request.args.get('code')
+    URI = "https://api.alpaca.markets/oauth/token"
+    data = {
+        'grant_type' : 'authorization_code',
+        'code' : code,
+        'client_id' : CLIENT_ID,
+        'client_secret' : SECRET_ID,
+        'redirect_uri' : UNENCODED_REDIRECT_URI
+    }
+    response = requests.post(URI,data=data,headers={"ContentType":"application/x-www-form-urlencoded"}).json()
+    access_token = response['access_token']
+    current_user.set_alpaca_access_code(access_token)
+    db.session.commit()
+    return redirect(url_for('main.index'))
+
+@bp.route(('/disconnect_alpaca'), methods=['GET'])
+@login_required
+def disconnect_alpaca():
+    current_user.set_alpaca_access_code(None)
+    db.session.commit()
+    return redirect(url_for('settings.brokers_settings'))
 
 
 @bp.route('/headlines', methods=['GET', 'POST'])
