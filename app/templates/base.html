@@ -23,73 +23,73 @@
 </head>
 
 <body>
-  <nav class="navbar fixed-top navbar-expand-sm bg-dark navbar-dark">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="{{ url_for('main.welcome') }}">Stock Trader</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="collapsibleNavbar">
-        <ul class="navbar-nav">
-          {% if current_user.is_authenticated %}
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('main.index') }}">Dashboard</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('media.headlines') }}">Headlines</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('history.account_history') }}">Account History</a>
-          </li>
-          {% endif %}
-        </ul>
-        <ul class="navbar-nav ms-auto">
-          {% if current_user.is_anonymous %}
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('auth.login') }}">Login</a>
-          </li>
-          {% else %}
-          <li>
-            <a class="nav-link" href="{{ url_for('settings.user_preferences') }}"><i class="bi bi-gear"></i></a>
-          </li>
-          <li>
-            <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
-          </li>
-          {% endif %}
-        </ul>
-      </div>
+<nav class="navbar fixed-top navbar-expand-sm bg-dark navbar-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{{ url_for('main.welcome') }}">Stock Trader</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+      <ul class="navbar-nav">
+        {% if current_user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('main.index') }}">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('media.headlines') }}">Headlines</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('history.account_history') }}">Account History</a>
+        </li>
+        {% endif %}
+      </ul>
+      <ul class="navbar-nav ms-auto">
+        {% if current_user.is_anonymous %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('auth.login') }}">Login</a>
+        </li>
+        {% else %}
+        <li>
+          <a class="nav-link" href="{{ url_for('settings.user_preferences') }}"><i class="bi bi-gear"></i></a>
+        </li>
+        <li>
+          <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
+        </li>
+        {% endif %}
+      </ul>
     </div>
-  </nav>
-  <div style="margin-top: 50px;"><br></div>
+  </div>
+</nav>
+<div style="margin-top: 50px;"><br></div>
 
-  <div class="container">
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    {% for message in messages %}
-    <div class="alert alert-success alert-dismissible fade show">
-      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-      {{ message }}
+<div class="container">
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  {% for message in messages %}
+  <div class="alert alert-success alert-dismissible fade show">
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    {{ message }}
+  </div>
+  {% endfor %}
+  {% endif %}
+  {% endwith %}
+</div>
+
+{% block content %}{% endblock %}
+
+<div style="margin-bottom: 120px;"></div>
+
+<div class="container-fluid border-top" style="position: fixed; bottom: 0; width: 100%; background: white;">
+  <footer class="d-flex flex-wrap justify-content-between align-items-center py-1 my-3 ">
+    <div class="ps-3 col-md-4 d-flex align-items-center">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="logo" style="height: 24px; width: auto">
+      <span class="text-muted">© 2022 The Droids</span>
     </div>
-    {% endfor %}
-    {% endif %}
-    {% endwith %}
-  </div>
-
-  {% block content %}{% endblock %}
-
-  <div style="margin-bottom: 120px;"></div>
-
-  <div class="container-fluid border-top" style="position: fixed; bottom: 0; width: 100%; background: white;">
-    <footer class="d-flex flex-wrap justify-content-between align-items-center py-1 my-3 ">
-      <div class="ps-3 col-md-4 d-flex align-items-center">
-        <img src="{{ url_for('static', filename='logo.png') }}" alt="logo" style="height: 24px; width: auto">
-        <span class="text-muted">© 2022 The Droids</span>
-      </div>
-      <div class="pe-3 col-md-4 justify-content-end d-flex">
-        <span class="text-muted">CSULB - CECS 491</span>
-      </div>
-    </footer>
-  </div>
+    <div class="pe-3 col-md-4 justify-content-end d-flex">
+      <span class="text-muted">CSULB - CECS 491</span>
+    </div>
+  </footer>
+</div>
 
 </body>
 
