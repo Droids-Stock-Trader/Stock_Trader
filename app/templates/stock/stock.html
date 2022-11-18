@@ -6,8 +6,19 @@
 
 <div class="container mt-3">
     <div class="row g-5">
+        <!-- Left Column -->
         <div class="col-md-5 mb-5 order-md-first order-last">
-          <h2 class="ms-3">Positions</h2>
+          <!-- Watchlist button toggle-->
+          <div class="my-2 row">
+            <div class="col">
+              <label for="add_watchlist" class="form-check-label"><b>Add To Watchlist</b></label>
+            </div>
+            <div class="col form-check form-switch">
+              <input class="form-check-input" type="checkbox" id="add_watchlist" onchange="add_or_remove_stock(this, '{{ stock["symbol"] }}')" {% if stock["in_watch_list"] %} checked {% endif %}>
+            </div>
+          </div>
+
+          <h2>Positions</h2>
           <div class="list-group list-group-flush border-bottom scrollarea">
             {% if positions|length > 0 %}
               {% for stock in portfolio %}
@@ -36,6 +47,7 @@
             <h4 class="col" id="close_price">Close price :</h4>
           </div>
         </div>
+        <!-- Right Column -->
         <div class="col-md-7 mb-5">
           <h3 id="stock_graph">{{ stock['name'] }}</h3>
           <div class="card">
@@ -46,24 +58,24 @@
             </div>
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
               <label class="btn btn-dark">
-                <input type="radio" name="options" id="option1" autocomplete="off" onclick='load_detail("{{stock["symbol"]}}","Minute")' checked> 1d
+                <input type="radio" name="options" id="option1" autocomplete="off" onclick='load_detail("{{ stock["symbol"] }}","Minute")' checked> 1d
               </label>
               <label class="btn btn-dark">
-                <input type="radio" name="options" id="option2" autocomplete="off" onclick='load_detail("{{stock["symbol"]}}","Day")'> 1w
+                <input type="radio" name="options" id="option2" autocomplete="off" onclick='load_detail("{{ stock["symbol"] }}","Day")'> 1w
               </label>
               <label class="btn btn-dark">
-                <input type="radio" name="options" id="option3" autocomplete="off" onclick='load_detail("{{stock["symbol"]}}","Week")'> 1m
+                <input type="radio" name="options" id="option3" autocomplete="off" onclick='load_detail("{{ stock["symbol"] }}","Week")'> 1m
               </label>
               <label class="btn btn-dark">
-                <input type="radio" name="options" id="option4" autocomplete="off" onclick='load_detail("{{stock["symbol"]}}","Month")'> 1y
+                <input type="radio" name="options" id="option4" autocomplete="off" onclick='load_detail("{{ stock["symbol"] }}","Month")'> 1y
               </label>
               <label class="btn btn-dark">
-                <input type="radio" name="options" id="option5" autocomplete="off" onclick='load_detail("{{stock["symbol"]}}","Year")'> 5y
+                <input type="radio" name="options" id="option5" autocomplete="off" onclick='load_detail("{{ stock["symbol"] }}","Year")'> 5y
               </label>
             </div>
             <div class="card-footer">
               <strong>Exchange:</strong> {{ stock['exchange'] }}<br>
-              <strong>Symbol:</strong> {{stock['symbol']}}<br>
+              <strong>Symbol:</strong> {{ stock['symbol'] }}<br>
               <strong>Status:</strong> {% if stock['status'] == 'active' %} Active {% else %} Inactive {% endif %}<br>
               <strong>Tradeable:</strong> {% if stock['tradable'] %} Ready to trade {% else %} Unavailable {% endif %}
             </div>
@@ -72,6 +84,6 @@
       </div>
 </div>
 <script src="{{ url_for('static', filename='stock/stock_detail.js') }}"></script>
-<script>load_detail('{{stock["symbol"]}}',"Minute")</script>
+<script>load_detail('{{ stock["symbol"] }}', "Minute")</script>
 
 {% endblock %}

@@ -71,3 +71,22 @@ $(window).resize(function () {
     Plotly.newPlot("price_plot", chart_parameters, layout);
 });
 
+
+function add_or_remove_stock(checkbox, symbol) {
+    let add = null
+    if (checkbox.checked) {
+        add = 1
+    } else {
+        add = 0
+    }
+
+    $.ajax({
+        data: {symbol: symbol, append: add}, 
+        type: 'POST',
+        url: '/stock/add_to_watch_list'
+    }).done(function(reponse) {
+
+    }).fail(function() {
+        console.log("Failed AJAX Call")
+    });
+}
