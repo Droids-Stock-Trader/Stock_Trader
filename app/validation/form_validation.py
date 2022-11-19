@@ -70,6 +70,5 @@ def validate_old_password(oldPassword):
     oldPassword - the user's old password to validate.
     """
     user = current_user
-    print(oldPassword.data)
     if not user.check_password(oldPassword.data):
         raise ValidationError('Incorrect Password.')
