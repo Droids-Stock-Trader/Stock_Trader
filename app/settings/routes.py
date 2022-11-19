@@ -121,6 +121,10 @@ def alpaca_code():
     access_token = response['access_token']
     current_user.set_alpaca_access_code(access_token)
     db.session.commit()
+    if (len(access_token) > 0):
+        flash("Successfully connected brokerage account.")
+    else:
+        flash("Something went wrong.",category='error')
     return redirect(url_for('main.index'))
 
 @bp.route(('/disconnect_alpaca'), methods=['GET'])
