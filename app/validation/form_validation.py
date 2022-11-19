@@ -2,6 +2,7 @@ from app.models import User
 from wtforms.validators import ValidationError
 from app import db
 import re
+from flask_login import current_user
 
 
 def validate_new_username(username):
@@ -58,3 +59,17 @@ def validate_phone_number(phone_number):
         int(stripped_number)
     except ValueError:
         raise ValidationError("Invalid characters.")
+
+def validate_old_password(oldPassword):
+    """
+    Validates if the password entered is the user's old password.
+    The entered field must also contain no whitespace.
+
+    Parameters
+    ------
+    oldPassword - the user's old password to validate.
+    """
+    user = current_user
+    print(oldPassword.data)
+    if not user.check_password(oldPassword.data):
+        raise ValidationError('Incorrect Password.')

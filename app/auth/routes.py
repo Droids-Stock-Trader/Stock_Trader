@@ -1,9 +1,9 @@
 from flask import render_template, redirect, url_for, flash, request
 from werkzeug.urls import url_parse
-from flask_login import current_user, login_user, logout_user
+from flask_login import current_user, login_user, logout_user, login_required
 from app import db
 from app.auth import bp
-from app.auth.forms import LoginForm, RegistrationForm, ResetPasswordRequestForm, ResetPasswordForm, ResetPasswordFormPreferences
+from app.auth.forms import LoginForm, RegistrationForm, ResetPasswordRequestForm, ResetPasswordForm, ChangePasswordForm
 from app.models import User, History
 from app.emails.email import send_password_reset_email
 
@@ -85,18 +85,19 @@ def reset_password(token):
     return render_template('auth/reset_password.html', title='Reset Password', form=form)
 
 @bp.route('/reset_password_preferences', methods=['GET', 'POST'])
+@login_required
 def reset_password_preferences():
     user = current_user
-    if not user:
-        return redirect(url_for('main.index'))
-    form = ResetPasswordFormPreferences()
+    form = ChangePasswordForm()
     if form.validate_on_submit():
-        if (user.check_password(form.oldPassword.data)):
-            user.set_password(form.password.data)
-            db.session.commit()
-            flash('Your password has been reset.')
-            return redirect(url_for('main.index'))
-        flash('Incorrect Password.')
-        return render_template('auth/reset_password_preferences.html', title='Reset Password', form=form)
+        user.set_password(form.password.data)
+        history = History(
+            title="Password Changed",
+            description="User password has been changed."
+        )
+        user.store_history_record(history)
+        db.session.commit()
+        flash('Your password has been reset.')
+        return redirect(url_for('settings.user_preferences'))
     return render_template('auth/reset_password_preferences.html', title='Reset Password', form=form)
 
