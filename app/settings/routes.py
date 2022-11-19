@@ -125,7 +125,7 @@ def alpaca_code():
         flash("Successfully connected brokerage account.")
     else:
         flash("Something went wrong.",category='error')
-    return redirect(url_for('main.index'))
+    return redirect(url_for('settings.brokers_settings'))
 
 @bp.route(('/disconnect_alpaca'), methods=['GET'])
 @login_required
