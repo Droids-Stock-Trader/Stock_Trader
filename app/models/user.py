@@ -97,8 +97,8 @@ class User(UserMixin, db.Model):
             stock: The Stock item to remove from the users watchlist
         '''
         if self.stock_in_watch_list(stock.symbol):
-            for i in range(len(self.watch_list)):
-                if self.watch_list[i].symbol == stock.symbol:
+            for i, s in enumerate(self.watch_list):
+                if s.symbol == stock.symbol:
                     self.watch_list.pop(i)
                     break
 

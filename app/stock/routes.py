@@ -70,7 +70,7 @@ def add_remove_to_watch_list():
     """
     # retrieves the request variables
     symbol = request.form['symbol']
-    append = True if int(request.form['append']) == 1 else False
+    append = True if request.form['append'] == 'true' else False
     try:
         # checks to see if the stock is already in the db
         # if it is not, a stock item is created
