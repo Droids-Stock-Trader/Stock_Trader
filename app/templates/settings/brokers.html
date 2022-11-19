@@ -1,0 +1,37 @@
+{% extends 'settings/_settings_base.html' %}
+
+{% block settings %}
+
+<div class="ms-5">
+</div>
+<h3 pb-5>Manage Brokerages</h3>
+<hr>
+<div class="px-3">
+  <div class="col mb-5">
+    {% if connected == True %}
+    <h3>Alpaca already connected</h3>
+    <div class="row mb-3">
+      <div class="input-group input-group-sm mb-3">
+        <div class="input-group-prepend">
+          <a class="input-group-text btn btn-dark" id="inputGroup-sizing-sm" onclick="reveal()">Reveal Access Code</a>
+        </div>
+        <input id="ac" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+        <div class="input-group-prepend">
+          <a class="input-group-text btn btn-danger" href="{{ url_for('settings.disconnect_alpaca') }}">Disconnect Alpaca</a>
+        </div>
+      </div>
+    </div>
+    {% else %}
+        <a class="btn btn-lg btn-primary" href="{{ url_for('settings.connect_alpaca') }}">Connect Alpaca</a>
+  {% endif %}
+  </div>
+</div>
+
+<script>
+  $('#sb-pref').addClass('active')
+  function reveal() {
+    document.getElementById("ac").value = "{{ code }}";
+  }
+</script>
+
+{% endblock %}
