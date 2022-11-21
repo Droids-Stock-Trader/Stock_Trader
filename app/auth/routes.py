@@ -80,6 +80,7 @@ def reset_password(token):
     form = ResetPasswordForm()
     if form.validate_on_submit():
         user.set_password(form.password.data)
+        # sends an email notification
         send_password_change_email(user)
         db.session.commit()
         flash('Your password has been reset.')
@@ -98,6 +99,7 @@ def reset_password_preferences():
             description="User password has been changed."
         )
         user.store_history_record(history)
+        # sends an email notification
         send_password_change_email(user)
         db.session.commit()
         flash('Your password has been reset.')

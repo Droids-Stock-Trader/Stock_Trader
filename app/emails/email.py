@@ -3,12 +3,28 @@ from app import mail
 from flask import render_template, current_app
 
 def send_email(subject, sender, recipients, text_body, html_body):
+    """
+    Used to send emails to a specified recipient. 
+    Params
+    ------
+    subject - The title of the email.
+    sender - The email that will be registered as the sender.
+    recipients - The email who will recieve the message.
+    text_body - The contents of the email in a txt format.
+    html_body - The contents of the email in html format.
+    """
     msg = Message(subject, sender=sender, recipients=recipients)
     msg.body = text_body
     msg.html = html_body
     mail.send(msg)
 
 def send_password_reset_email(user):
+    """
+    Sends an email to the user to reset their password.
+    Params
+    ------
+    user - the user who will be sent the email.
+    """
     token = user.get_reset_password_token()
     send_email('Stock Trader: Reset Your Password',
                sender='jerry.aragon@student.csulb.edu', recipients=[user.email],
@@ -16,6 +32,12 @@ def send_password_reset_email(user):
                html_body=render_template('email/reset_password.html',user=user, token=token))
 
 def send_notification_email(changes_made, user):
+    """
+    Sends a notification email for each user attribute that was changed.
+    Params
+    ------
+    user - the user who will be sent the emails.
+    """
     for attribute in changes_made:
         send_email('Stock Trader: ' + attribute + ' Change Notification',
                    sender='jerry.aragon@student.csulb.edu', recipients=[user.email],
@@ -23,12 +45,25 @@ def send_notification_email(changes_made, user):
                    html_body=render_template('email/notification_change.html',user=user))
 
 def send_password_change_email(user):
+    """
+    Sends a notification email when the user's password is changed.
+    Params
+    ------
+    user - the user who will be sent the email.
+    """
     send_email('Stock Trader: Password Change Notification',
         sender='jerry.aragon@student.csulb.edu', recipients=[user.email],
         text_body=render_template('email/notification_change.txt', user=user),
         html_body=render_template('email/notification_change.html',user=user))
 
 def send_notification_to_old_email(user):
+    """
+    Sends a notification email to the user's 
+    old email being replaced with a new email.
+    Params
+    ------
+    user - the user who will be sent the email.
+    """
     send_email('Stock Trader: Email Has Been Changed Notification',
         sender='jerry.aragon@student.csulb.edu', recipients=[user.email],
         text_body=render_template('email/notification_change.txt', user=user),
