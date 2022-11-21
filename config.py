@@ -28,6 +28,10 @@ class Config(object):
     ALPACA_API_KEY = os.environ.get('ALPACA_API_KEY')
     ALPACA_SECRET_KEY = os.environ.get('ALPACA_SECRET_KEY')
 
+    # Stock App Keys (for oauth)
+    ALPACA_CLIENT_ID = os.environ.get('ALPACA_CLIENT_ID')
+    ALPACA_SECRET_ID = os.environ.get('ALPACA_SECRET_ID')
+
     # History configurtion variables
     HISTORY_LISTING_CNT = 25
 

@@ -1,4 +1,5 @@
-
+let chart_parameters = null
+let layout = null
 
 
 function load_detail(stock_symbol, timeframe) {
@@ -71,3 +72,23 @@ $(window).resize(function () {
     Plotly.newPlot("price_plot", chart_parameters, layout);
 });
 
+
+function add_or_remove_stock(checkbox, symbol) {    
+    let add = checkbox.checked;
+    $.ajax({
+        data: {symbol: symbol, append: add}, 
+        type: 'POST',
+        url: '/stock/add_to_watch_list'
+    }).done(function(reponse) {
+        let process = 'removed from';
+        if (checkbox.checked) {
+            process = 'added to'
+        }
+        let message = symbol + ' was ' + process + ' your watchlist.'
+        $('#alerts').html(function(i, origText) {
+            return '<div class="alert alert-success alert-dismissible fade show"><button type="button" class="btn-close" data-bs-dismiss="alert"></button>' + message + '</div>' + origText
+        });       
+    }).fail(function() {
+        console.log("Failed AJAX Call")
+    });
+}

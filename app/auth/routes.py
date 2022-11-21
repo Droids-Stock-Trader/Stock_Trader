@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash, request, current_app
 from werkzeug.urls import url_parse
 from flask_login import current_user, login_user, logout_user, login_required
 from app import db
@@ -6,6 +6,7 @@ from app.auth import bp
 from app.auth.forms import LoginForm, RegistrationForm, ResetPasswordRequestForm, ResetPasswordForm, ChangePasswordForm
 from app.models import User, History
 from app.emails.email import send_password_reset_email
+
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
@@ -100,4 +101,5 @@ def reset_password_preferences():
         flash('Your password has been reset.')
         return redirect(url_for('settings.user_preferences'))
     return render_template('auth/reset_password_preferences.html', title='Reset Password', form=form)
+
 

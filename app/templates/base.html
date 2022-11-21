@@ -38,9 +38,6 @@
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('media.headlines') }}">Headlines</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('history.account_history') }}">Account History</a>
-          </li>
           {% endif %}
         </ul>
         <ul class="navbar-nav ms-auto">
@@ -48,12 +45,27 @@
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('auth.login') }}">Login</a>
           </li>
-          {% else %}
-          <li>
-            <a class="nav-link" href="{{ url_for('settings.user_preferences') }}"><i class="bi bi-gear"></i></a>
-          </li>
-          <li>
-            <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
+          {% else %}          
+          <a id="symbol_link" href="#" hidden>Hidden Link</a>
+          <div class="input-group d-flex me-3">            
+            
+            <input id="search_bar" type="text" class="form-control" placeholder="Symbol">
+            <button class="btn btn-outline-info" type="button" onclick="sym_search()"><div class="px-1">Search</div></button>
+            
+          </div>
+          <li class="nav-item dropdown">
+            <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"><i class="bi bi-person-circle"></i></a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li>
+                <a class="dropdown-item" href="{{ url_for('settings.user_preferences') }}">Settings</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{{ url_for('history.account_history') }}">Account History</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{{ url_for('auth.logout') }}">Logout</a>
+              </li>
+            </ul>
           </li>
           {% endif %}
         </ul>
@@ -62,7 +74,7 @@
   </nav>
   <div style="margin-top: 50px;"><br></div>
 
-  <div class="container">
+  <div id="alerts" class="container">
     {% with messages = get_flashed_messages() %}
     {% if messages %}
     {% for message in messages %}
@@ -92,5 +104,24 @@
   </div>
 
 </body>
+
+<script>
+  let sb = document.getElementById("search_bar");
+  sb.addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+      sym_search();
+    }
+  });
+
+
+  function sym_search() {
+    let sym = $('#search_bar').val().toUpperCase();
+    if (sym != "") {
+      $('#symbol_link').attr("href", "{{ url_for('stock.stock') }}?stock=" + sym);
+      let l = document.getElementById("symbol_link").click();
+    }
+  }
+
+</script>
 
 </html>
