@@ -19,6 +19,7 @@ class ProfileForm(FlaskForm):
     FlaskForm
     """
     username = StringField('Username', validators=[DataRequired()])
+    password = StringField('Password')
     phone_number = StringField('Phone Number')
     email = StringField('Email', validators=[DataRequired(), Email()])
     dob = DateField('Date Of Birth')

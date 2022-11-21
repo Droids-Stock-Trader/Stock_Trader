@@ -136,3 +136,4 @@ app.db
 .vscode
 dev.html
 dev.py
+.vs/
