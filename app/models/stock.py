@@ -6,6 +6,7 @@ from alpaca.trading.client import TradingClient
 from datetime import datetime
 from flask import current_app
 import json
+import yfinance as yf
 
 class Stock(db.Model):
     __tablename__ = 'stock'
@@ -16,6 +17,16 @@ class Stock(db.Model):
 
     def __repr__(self):
         return f'<Stock: {self.symbol}>'
+
+    def get_current_financial_data(self) -> dict:
+        """
+        Returns the current financial data from yahoo finance.
+
+        The data is returned as a dictionary in dictionary form. For
+        additional information on the keys and values format, reference
+        yfinance.txt for more details.
+        """
+        return yf.Ticker(self.symbol).stats()
 
     @staticmethod
     def get_stock_bars(symbol, Unit : TimeFrameUnit, start_datetime : datetime):

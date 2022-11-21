@@ -5,9 +5,9 @@ let current_stock = $("#stock_listing").first();
 const CYCLE_TIME = 7500;
 
 
-function load_detail(stock_id) {
+function load_detail(symbol) {
     $.ajax({
-        data: { id: stock_id },
+        data: { symbol: symbol },
         type: 'POST',
         url: '/query_stock_info'
     }).done(function (data) {
@@ -44,7 +44,8 @@ function load_detail(stock_id) {
 function cycle_next_stock() {
     current_stock = current_stock.next();
     if (current_stock.length == 0) {
-        current_stock = $("#stock_listing").first();
+        // current_stock = $("#stock_listing").first();
+        location.reload()
     }
     current_stock.click();
 }
