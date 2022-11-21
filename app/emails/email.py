@@ -28,8 +28,8 @@ def send_password_change_email(user):
         text_body=render_template('email/notification_change.txt', user=user),
         html_body=render_template('email/notification_change.html',user=user))
 
-def send_old_email_change_email(email):
-    send_email('Stock Trader: Email Change Notification',
-        sender='jerry.aragon@student.csulb.edu', recipients=[email],
+def send_notification_to_old_email(user):
+    send_email('Stock Trader: Email Has Been Changed Notification',
+        sender='jerry.aragon@student.csulb.edu', recipients=[user.email],
         text_body=render_template('email/notification_change.txt', user=user),
         html_body=render_template('email/notification_change.html',user=user))
