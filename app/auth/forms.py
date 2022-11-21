@@ -79,3 +79,20 @@ class ResetPasswordForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField('Repeat Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Password Reset')
+
+class ChangePasswordForm(FlaskForm):
+    oldPassword = PasswordField('Old Password', validators=[DataRequired()])
+    password = PasswordField('New Password', validators=[DataRequired()])
+    password2 = PasswordField('Repeat New Password', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Change Password')
+
+    def validate_oldPassword(self, oldPassword):
+        """
+        Validates that the password entered is the user's
+        correct password.
+
+        Parameters
+        ------
+        oldPassword - the user's password being replaced.
+        """
+        validation.validate_old_password(oldPassword)
