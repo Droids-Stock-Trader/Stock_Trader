@@ -21,3 +21,15 @@ def send_notification_email(changes_made, user):
                    sender='jerry.aragon@student.csulb.edu', recipients=[user.email],
                    text_body=render_template('email/notification_change.txt', user=user),
                    html_body=render_template('email/notification_change.html',user=user))
+
+def send_password_change_email(user):
+    send_email('Stock Trader: Password Change Notification',
+        sender='jerry.aragon@student.csulb.edu', recipients=[user.email],
+        text_body=render_template('email/notification_change.txt', user=user),
+        html_body=render_template('email/notification_change.html',user=user))
+
+def send_old_email_change_email(email):
+    send_email('Stock Trader: Email Change Notification',
+        sender='jerry.aragon@student.csulb.edu', recipients=[email],
+        text_body=render_template('email/notification_change.txt', user=user),
+        html_body=render_template('email/notification_change.html',user=user))
