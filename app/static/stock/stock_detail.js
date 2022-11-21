@@ -82,13 +82,13 @@ function add_or_remove_stock(checkbox, symbol) {
     }).done(function(reponse) {
         let process = 'removed from';
         if (checkbox.checked) {
-            process = 'added to'
+            process = 'added to';
         }
-        let message = symbol + ' was ' + process + ' your watchlist.'
+        let message = symbol + ' was ' + process + ' your watchlist.';
         $('#alerts').html(function(i, origText) {
-            return '<div class="alert alert-success alert-dismissible fade show"><button type="button" class="btn-close" data-bs-dismiss="alert"></button>' + message + '</div>' + origText
+            return '<div class="alert alert-success alert-dismissible fade show"><button type="button" class="btn-close" data-bs-dismiss="alert"></button>' + message + '</div>' + origText;
         });       
     }).fail(function() {
-        console.log("Failed AJAX Call")
+        console.log("Failed AJAX Call");
     });
 }

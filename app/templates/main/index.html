@@ -11,15 +11,15 @@
       <div class="list-group list-group-flush border-bottom scrollarea">
         {% for stock in portfolio %}
         <a id="stock_listing" value="{{ stock.id }}" onclick="load_detail('{{ stock.id }}')" href="#" class="list-group-item list-group-item-action py-3 lh-sm">
-          <div class="d-flex w-100 align-itemscenter justify-content-between">
+          <div class="d-flex w-100 align-itemscenter justify-content-between mb-1">
             <div>
               <strong class="mb-1">{{ stock.corporate_name }}</strong>
               <small class="text-muted"> ({{ stock.symbol }})</small>
             </div>
-            {% if stock.price >= stock.open %}
-            <span>+1.75%</span>
+            {% if stock.price >= stock.prev_close %}
+            <span style="color: green;">+{{ stock.percent_change }}%</span>
             {% else %}
-            <span style='color: red'>-1.25%</span>
+            <span style='color: red'>({{ stock.percent_change }})%</span>
             {% endif %}
           </div>
           <div class="mb-1 d-flex">
