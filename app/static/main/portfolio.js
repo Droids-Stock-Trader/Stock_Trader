@@ -5,9 +5,9 @@ let current_stock = $("#stock_listing").first();
 const CYCLE_TIME = 7500;
 
 
-function load_detail(symbol) {
+function load_detail(id) {
     $.ajax({
-        data: { symbol: symbol },
+        data: { id: id },
         type: 'POST',
         url: '/query_stock_info'
     }).done(function (data) {

@@ -41,22 +41,10 @@ def query_stock_info():
     """
     Makes an HTTPS POST request for information on a stock
     """
-    # this all needs to be rewritten to use the db and to do proper error checking
-    symbol = request.form['symbol']
-    
-    delta = timedelta(days=-7)
-    date_end = dt.now()
-    date_start = date_end + delta
-
-    
-    
-    # data = [stock for stock in dev_stock_data if stock['id'] == stock_id][0]
-    data = [stock for stock in dev_stock_data if stock['id'] == 1][0]   # TODO - Needs to go.
-    
-    
-    data['dates'] = dev_stock_dates
-    data['prices'] = dev_stock_prices[0]
-    return jsonify(data)
+    stock_id = request.form['id']
+    stock = Stock.query.get(stock_id)
+    stock_data = stock.get_stock_lines(period='1y', interval='1d')
+    return jsonify(stock_data)
 
 
 @bp.route('/welcome')
@@ -93,11 +81,11 @@ def _collect_stock_data(
         s['id'] = stock.id
         s['symbol'] = stock.symbol
         data = stock.get_current_financial_data()
-        s['low'] = data['summaryDetail']['dayLow'] or None
-        s['high'] = data['summaryDetail']['dayHigh'] or None
+        s['low'] = round(data['summaryDetail']['dayLow'], 2) or None
+        s['high'] = round(data['summaryDetail']['dayHigh'], 2) or None
+        s['open'] = round(data['summaryDetail']['open'], 2) or None
         s['beta'] = data['defaultKeyStatistics']['beta'] or None
-        s['open'] = data['summaryDetail']['open'] or None
-        s['price'] = data['financialData']['currentPrice'] or None
+        s['price'] = round(data['financialData']['currentPrice'], 2) or None
         s['prev_close'] = data['summaryDetail']['previousClose'] or None
         s['corporate_name'] = data['price']['longName'] or None
         s['percent_change'] = round(

@@ -10,7 +10,7 @@
       <h3 class="ms-3">Portfolio</h3>
       <div class="list-group list-group-flush border-bottom scrollarea">
         {% for stock in portfolio %}
-        <a id="stock_listing" value="{{ stock.id }}" onclick="load_detail('{{ stock.symbol }}')" href="#" class="list-group-item list-group-item-action py-3 lh-sm">
+        <a id="stock_listing" value="{{ stock.id }}" onclick="load_detail('{{ stock.id }}')" href="#" class="list-group-item list-group-item-action py-3 lh-sm">
           <div class="d-flex w-100 align-itemscenter justify-content-between mb-1">
             <div>
               <strong class="mb-1">{{ stock.corporate_name }}</strong>
