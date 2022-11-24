@@ -42,12 +42,14 @@ function load_detail(id) {
 
 
 function cycle_next_stock() {
-    current_stock = current_stock.next();
-    if (current_stock.length == 0) {
-        // current_stock = $("#stock_listing").first();
-        location.reload()
+    if (document.getElementById('auto_scroll').checked) {
+        current_stock = current_stock.next();
+        if (current_stock.length == 0) {
+            // current_stock = $("#stock_listing").first();
+            location.reload()
+        }
+        current_stock.click();
     }
-    current_stock.click();
 }
 
 
