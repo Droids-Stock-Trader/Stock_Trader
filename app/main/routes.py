@@ -1,11 +1,9 @@
-from datetime import datetime as dt, timedelta
 from flask import render_template, redirect, url_for, request, jsonify
 from flask_login import current_user, login_required
 import threading
 from app.main import bp
 from app.models.stock import Stock
 
-from app.models._development_data import dev_stock_data, dev_stock_dates, dev_stock_prices
 
 @bp.route('/')
 @bp.route('/index')
@@ -43,8 +41,20 @@ def query_stock_info():
     """
     stock_id = request.form['id']
     stock = Stock.query.get(stock_id)
-    stock_data = stock.get_stock_lines(period='1y', interval='1d')
-    return jsonify(stock_data)
+
+    stock_data = []
+    lock = threading.Lock()
+    args = [stock, stock_data, lock]
+    stats_thread = threading.Thread(target=_collect_stock_data, args=args)
+    graph_thread = threading.Thread(target=_collect_graph_data, args=args)
+    stats_thread.start()
+    graph_thread.start()
+    stats_thread.join()
+    graph_thread.join()
+
+    response_data = {**stock_data[0], **stock_data[1]}
+
+    return jsonify(response_data)
 
 
 @bp.route('/welcome')
@@ -64,20 +74,20 @@ def _collect_stock_data(
     given watchlist. This function is meant to be called
     concurrently with other functions that have write
     to the given watchlist. A lock must be provided to the
-    finantial data to be appended to the watchlist.
+    financial data to be appended to the watchlist.
 
     param:
         stock: The stock object that is to be added to the 
         to the watch list. The stock must have already been
-        commited to the db requiring an assigned id.
+        committed to the db requiring an assigned id.
         
         wl_data: The watch list to assign the stock data to.
         
         lock: The treading lock to prevent writing errors to
         watchlist.
     """
+    s = {}
     try:
-        s = {}
         s['id'] = stock.id
         s['symbol'] = stock.symbol
         data = stock.get_current_financial_data()
@@ -90,7 +100,40 @@ def _collect_stock_data(
         s['corporate_name'] = data['price']['longName'] or None
         s['percent_change'] = round(
             (s['price'] - s['prev_close']) * 100 / s['prev_close'], 2) or None
-        with lock:
-            wl_data.append(s)
+
+        s['volume'] = f"{int(data['summaryDetail']['volume']):,}" or None
+        s['avg_volume'] = f"{data['summaryDetail']['averageVolume']:,}" or None
+        s['pe_ratio'] = round(data['summaryDetail']['trailingPE'], 2) or None
+        s['beta'] = round(data['defaultKeyStatistics']['beta'], 2) or None
     except:
         pass
+    with lock:
+        wl_data.append(s)
+
+
+def _collect_graph_data(
+    stock: Stock,
+    return_data: list,
+    lock: threading.Lock) -> None:
+    """
+    Queries the historical stock price data from yahoo finance.
+    Appends the data to the given list. A threading lock is required
+    for the data to be appended to the list.
+
+    param:
+        stock: The stock object that is to be added to the 
+        to the list. The stock must have already been
+        committed to the db requiring an assigned id.
+        
+        return_data: The list to assign the stock graph data to.
+        
+        lock: The treading lock to prevent writing errors to
+        the return_list.
+    """
+    stock_data = None
+    try:
+        stock_data = stock.get_stock_lines(period='1y', interval='1d')
+    except:
+        pass
+    with lock:
+        return_data.append(stock_data)

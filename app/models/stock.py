@@ -47,7 +47,6 @@ class Stock(db.Model):
         # Extracts the used data and formats
         dates = dataframe.index
         response_data = {}
-        response_data['corporate_name'] = self.corporate_name
         response_data['dates'] = dates.strftime('%Y-%m-%d').tolist()
         response_data['prices'] = dataframe['Close'].values.tolist()
 
