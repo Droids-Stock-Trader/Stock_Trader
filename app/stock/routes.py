@@ -1,11 +1,11 @@
 import datetime
 from time import time
-from flask import render_template, redirect, url_for, request
+from flask import render_template, request, flash, abort, jsonify
 from werkzeug.urls import url_parse
 from flask_login import current_user, login_required
 from app import db
 from app.stock import bp
-from app.models import Stock
+from app.models import Stock, News
 from alpaca.data.timeframe import TimeFrame
 from datetime import datetime, timedelta
 
@@ -16,8 +16,20 @@ def stock():
     """ Stock Info Route """
     symbol = request.args.get('stock')    
     asset = Stock.get_stock_info(symbol).dict()
+    # watchlist toggle
     asset['in_watch_list'] = current_user.stock_in_watch_list(asset['symbol'])
-    return render_template('stock/stock.html', title=f'{symbol} Details', stock=asset)
+    # queryies the news to the stockname & stock symbol
+    news_results = News.search_news_results([asset['name'], asset['symbol']], 1)
+    if news_results['status_code'] != 200:
+        flash(news_results['message'])
+        abort(500)
+     
+    return render_template(
+        'stock/stock.html', 
+        title=f'{symbol} Details', 
+        stock=asset, 
+        articles=news_results['articles']
+    )
 
 
 @bp.route('/stock_info', methods=['POST'])
@@ -54,6 +66,20 @@ def stock_info():
     
     yesterday = today - time_delta
     return Stock.get_stock_bars(symbol, ts, yesterday)
+
+
+@bp.route('/stock_summary', methods=['POST'])
+@login_required
+def stock_summary():
+    symbol = request.form['symbol']
+    stock = Stock.query.filter_by(symbol=symbol).first()
+    summary = {'summary': '', 'status_code': 200}
+    try:
+        data = stock.get_current_financial_data()
+        summary['summary'] = data['summaryProfile']['longBusinessSummary'] or None
+    except:
+        summary['status_code'] = 500
+    return jsonify(summary)
 
 
 @bp.route('/add_to_watch_list', methods=['POST'])

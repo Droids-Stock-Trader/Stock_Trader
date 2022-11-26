@@ -68,6 +68,21 @@ function load_detail(stock_symbol, timeframe) {
 }
 
 
+function load_summary(symbol) {
+    $.ajax({
+        data: { symbol: symbol },
+        type: 'POST',
+        url: '/stock/stock_summary'
+    }).done(function(data) {        
+        if (data['status_code'] === 200) {
+            $('#summary').text(data['summary']);
+        }
+    }).fail(function () {
+        console.log('Failed to get corp summary')
+    });
+}
+
+
 $(window).resize(function () {
     Plotly.newPlot("price_plot", chart_parameters, layout);
 });
