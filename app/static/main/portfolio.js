@@ -35,24 +35,26 @@ function load_detail(id) {
 
         Plotly.newPlot("price_plot", graph_prices, layout);
 
-        $('#price').text(data['price']);
-        $('#percent_change').text(data['percent_change'] + '%');
-        $('#open').text(data['open']);
-        $('#high').text(data['high']);
-        $('#low').text(data['low']);
-        $('#vol').text(data['volume']);
-        $('#prev_close').text(data['prev_close']);
-        $('#pe_ratio').text(data['pe_ratio']);
-        $('#beta').text(data['beta']);
-        $('#avg_vol').text(data['avg_volume']);
-
-        if (data['percent_change'] < 0) {
-            $('#percent_change').css('color', 'red');
-        } else {
-            $('#percent_change').css('color', 'green');
+        if (data['status_code'] == 200) {
+            $('#price').text(data['price']);
+            $('#percent_change').text(data['percent_change'] + '%');
+            $('#open').text(data['open']);
+            $('#high').text(data['high']);
+            $('#low').text(data['low']);
+            $('#vol').text(data['volume']);
+            $('#prev_close').text(data['prev_close']);
+            $('#pe_ratio').text(data['pe_ratio']);
+            $('#beta').text(data['beta']);
+            $('#avg_vol').text(data['avg_volume']);
+    
+            if (data['percent_change'] < 0) {
+                $('#percent_change').css('color', 'red');
+            } else {
+                $('#percent_change').css('color', 'green');
+            }
+    
+            $('#detail_link').attr("href", "/stock/detail?stock=" + data['symbol']);
         }
-
-        $('#detail_link').attr("href", "/stock/detail?stock=" + data['symbol']);
 
     }).fail(function () {
         console.log("Failed AJAX Call");
@@ -63,9 +65,11 @@ function load_detail(id) {
 function cycle_next_stock() {
     if (document.getElementById('auto_scroll').checked) {
         current_stock = current_stock.next();
+        // if the last sock is reached, refesh the page
         if (current_stock.length == 0) {
-            // current_stock = $("#stock_listing").first();
-            location.reload()
+            // sets an argument to keep the auto scroll enabled
+            let url = '/index?auto=true';
+            location.href = url;
         }
         current_stock.click();
     }
@@ -82,6 +86,6 @@ $(document).ready(function () {
     load_detail(num);
 
     setInterval(function () {
-        cycle_next_stock()
+        cycle_next_stock();
     }, CYCLE_TIME);
 });

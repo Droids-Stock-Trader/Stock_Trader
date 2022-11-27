@@ -29,8 +29,15 @@ def index():
         t.start()
     for t in threads:
         t.join()
-
-    return render_template('main/index.html', title='Dashboard', portfolio=portfolio)
+    # sets the autoscroll toggle    
+    auto_scroll = request.args.get('auto')
+    
+    return render_template(
+        'main/index.html', 
+        title='Dashboard', 
+        portfolio=portfolio,
+        auto=auto_scroll
+    )
 
 
 @bp.route('/query_stock_info', methods=['POST'])
@@ -39,21 +46,24 @@ def query_stock_info():
     """
     Makes an HTTPS POST request for information on a stock
     """
-    stock_id = request.form['id']
-    stock = Stock.query.get(stock_id)
+    try:
+        stock_id = request.form['id']
+        stock = Stock.query.get(stock_id)
 
-    stock_data = []
-    lock = threading.Lock()
-    args = [stock, stock_data, lock]
-    stats_thread = threading.Thread(target=_collect_stock_data, args=args)
-    graph_thread = threading.Thread(target=_collect_graph_data, args=args)
-    stats_thread.start()
-    graph_thread.start()
-    stats_thread.join()
-    graph_thread.join()
+        stock_data = []
+        lock = threading.Lock()
+        args = [stock, stock_data, lock]
+        stats_thread = threading.Thread(target=_collect_stock_data, args=args)
+        graph_thread = threading.Thread(target=_collect_graph_data, args=args)
+        stats_thread.start()
+        graph_thread.start()
+        stats_thread.join()
+        graph_thread.join()
 
-    response_data = {**stock_data[0], **stock_data[1]}
-
+        response_data = {**stock_data[0], **stock_data[1]}
+        response_data['status_code'] = 200
+    except:
+        return jsonify({'status_code': 500})
     return jsonify(response_data)
 
 

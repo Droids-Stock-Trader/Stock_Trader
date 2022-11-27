@@ -32,7 +32,7 @@
       </div>
     </div>
     <div class="col-md-7 mb-5">
-      <h3 id="stock_graph">Alphabet Inc</h3>
+      <h3 id="stock_graph"></h3>
       <div class="card">
         <div class="card-body">
           <div class="border border-2 rounded">
@@ -41,7 +41,7 @@
         </div>
         <div class="card-footer">
           <div class="form-check form-switch">
-            <input class="form-check-input" type="checkbox" id="auto_scroll">
+            <input class="form-check-input" type="checkbox" id="auto_scroll" {% if auto == 'true' %} checked {% endif %}>
             <label class="form-check-label" for="auto_scroll">Auto Scroll</label>
           </div>
         </div>

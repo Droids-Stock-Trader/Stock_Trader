@@ -5,7 +5,7 @@ from werkzeug.urls import url_parse
 from flask_login import current_user, login_required
 from app import db
 from app.stock import bp
-from app.models import Stock, News
+from app.models import Stock, News, News_Settings
 from alpaca.data.timeframe import TimeFrame
 from datetime import datetime, timedelta
 
@@ -19,6 +19,9 @@ def stock():
     # watchlist toggle
     asset['in_watch_list'] = current_user.stock_in_watch_list(asset['symbol'])
     # queryies the news to the stockname & stock symbol
+    if current_user.news_settings == None:
+        current_user.news_settings = News_Settings()
+        db.session.commit()
     news_results = News.search_news_results([asset['name'], asset['symbol']], 1)
     if news_results['status_code'] != 200:
         flash(news_results['message'])
@@ -71,6 +74,13 @@ def stock_info():
 @bp.route('/stock_summary', methods=['POST'])
 @login_required
 def stock_summary():
+    """
+    API call that returns a business summary for the given stock 
+    symbol. If an error orrucs, returns 500, otherwose 200.
+
+    param:
+        symbol: The stock symbol to return the summary for.
+    """
     symbol = request.form['symbol']
     stock = Stock.query.filter_by(symbol=symbol).first()
     summary = {'summary': '', 'status_code': 200}
