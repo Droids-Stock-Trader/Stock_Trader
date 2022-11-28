@@ -15,6 +15,14 @@
       {% endfor %}
     </div>
   </div>
+  <div class="row mb-5 mt-3">
+      <div class="col-sm-4">
+          {{ form.password.label(class='form-label') }}
+      </div>
+      <div class="col-sm-8">
+        <a href="{{ url_for('auth.reset_password_preferences') }}">Change Password</a>
+      </div>
+  </div>
   <div class="row mb-5">
     <div class="col-sm-4">
       {{ form.phone_number.label(class='form-label') }}
