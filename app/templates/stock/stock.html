@@ -45,7 +45,7 @@
           <div class="row">
             <h4 class="col" id="open_price">Open price :</h4>
             <h4 class="col" id="close_price">Close price :</h4>
-          </div>
+          </div>          
         </div>
         <!-- Right Column -->
         <div class="col-md-7 mb-5">
@@ -83,7 +83,20 @@
         </div>
       </div>
 </div>
+<div class="container">
+  <h1>Summary</h1>
+  <div id="summary"></div>
+</div>
+<div class="container">
+  <hr>
+  <div class="list-group list-group-flush mb-3">
+    {% for article in articles %}
+    {% include 'media/_news_listing.html' %}
+    {% endfor %}
+  </div>
+</div>
 <script src="{{ url_for('static', filename='stock/stock_detail.js') }}"></script>
 <script>load_detail('{{ stock["symbol"] }}', "Minute")</script>
+<script>load_summary('{{ stock["symbol"] }}')</script>
 
 {% endblock %}
