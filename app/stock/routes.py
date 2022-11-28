@@ -1,10 +1,10 @@
 import datetime
 from time import time
-from flask import render_template, redirect, url_for, request
-from werkzeug.urls import url_parse
+from flask import render_template, request, flash
 from flask_login import current_user, login_required
 from app import db
 from app.stock import bp
+import requests
 from app.models import Stock
 from alpaca.data.timeframe import TimeFrame
 from datetime import datetime, timedelta
@@ -17,7 +17,21 @@ def stock():
     symbol = request.args.get('stock')    
     asset = Stock.get_stock_info(symbol).dict()
     asset['in_watch_list'] = current_user.stock_in_watch_list(asset['symbol'])
-    return render_template('stock/stock.html', title=f'{symbol} Details', stock=asset)
+
+    APCA_API_BASE_URL="https://paper-api.alpaca.markets"
+    URI = APCA_API_BASE_URL + "/v2/positions/" + symbol
+    # URI = APCA_API_BASE_URL + "/v2/orders"
+    header={"ContentType":"application/x-www-form-urlencoded",'Authorization' : 'Bearer ' + current_user.get_alpaca_access_code()}
+    positions = requests.get(URI,headers=header).json()
+    try:
+        # Used for handling empty position response
+        code = positions['code']
+        positions = []
+    except KeyError:
+        pass
+    print(positions)
+
+    return render_template('stock/stock.html', title=f'{symbol} Details', stock=asset,positions=positions)
 
 
 @bp.route('/stock_info', methods=['POST'])
@@ -88,3 +102,22 @@ def add_remove_to_watch_list():
     except:
         db.session.rollback()
         return 'Error'
+@bp.route('/create_order',methods=['POST'])
+@login_required
+def create_order():
+        symbol = request.form['symbol']
+        qty = request.form['qty']
+        side = request.form['side']
+        APCA_API_BASE_URL="https://paper-api.alpaca.markets"
+        URI = APCA_API_BASE_URL + "/v2/orders"
+        header={"ContentType":"application/x-www-form-urlencoded",'Authorization' : 'Bearer ' + current_user.get_alpaca_access_code()}
+        data = {
+            "symbol":symbol,
+            "qty":qty,
+            "side":side,
+            "type":"market",
+            "time_in_force":"gtc",
+        }
+        response = requests.post(URI,json=data,headers=header).json()
+        flash("Success!")
+        return response

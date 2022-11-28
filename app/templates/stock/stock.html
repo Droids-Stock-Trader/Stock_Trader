@@ -18,35 +18,37 @@
             </div>
           </div>
 
-          <h2>Positions</h2>
-          <div class="list-group list-group-flush border-bottom scrollarea">
-            {% if positions|length > 0 %}
-              {% for stock in portfolio %}
-                <div class="list-group-item-flush">A</div>
-              {% endfor %}
-            {% else %}
-              <h3>You currently have no positions.</h3>
-            {% endif %} 
-          </div>
+          
           <div class="row">
             <div class="input-group col">
               <div class="input-group-prepend">
-                <span class="input-group-text btn-success" id="basic-addon1">Buy</span>
+                <span class="input-group-text btn-success" id="basic-addon1" onclick="create_order('{{ stock ["symbol"] }}',document.getElementById('buy-qty').value.toString(),'buy')">Buy</span>
               </div>
-              <input type="text" class="form-control" placeholder="+1" aria-describedby="basic-addon1">
+              <input type="text" id="buy-qty" class="form-control" value="+1" aria-describedby="basic-addon1">
             </div> 
             <div class="input-group col">
               <div class="input-group-prepend">
-                <span class="input-group-text btn-danger" id="basic-addon1">Sell</span>
+                <span class="input-group-text btn-danger" id="basic-addon1" onclick="create_order('{{ stock ["symbol"] }}',document.getElementById('sell-qty').value.toString(),'sell')">Sell</span>
               </div>
-              <input type="text" class="form-control" placeholder="-1" aria-describedby="basic-addon1">
+              <input type="text" id="sell-qty" class="form-control" value="-1" aria-describedby="basic-addon1">
             </div> 
           </div>
           <div class="row">
             <h4 class="col" id="open_price">Open price :</h4>
             <h4 class="col" id="close_price">Close price :</h4>
           </div>
+          <h2>Positions</h2>
+          <div class="list-group list-group-flush border-bottom scrollarea">
+            {% if positions|length > 0 %}
+              {% for pos in positions %}
+                <div class="list-group-item-flush"><strong>{{ pos.symbol }} {{pos.side}} </strong> {{pos.qty}}; Market Value {{pos.market_value}}</div>
+              {% endfor %}
+            {% else %}
+              <h3>You currently have no positions.</h3>
+            {% endif %} 
+          </div>
         </div>
+        
         <!-- Right Column -->
         <div class="col-md-7 mb-5">
           <h3 id="stock_graph">{{ stock['name'] }}</h3>
