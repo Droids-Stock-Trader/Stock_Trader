@@ -9,6 +9,7 @@ from app import db
 from app.settings import bp
 from app.settings.forms import ProfileForm, NotificationForm, HeadlinesForm
 from app.models import History, News_Settings
+from app.emails.email import send_notification_email
 
 
 @bp.route('/profile', methods=['GET', 'POST'])
@@ -35,6 +36,10 @@ def user_preferences():
             )
             current_user.store_history_record(record)
             db.session.commit()
+            # sends a notification email based on the attributes changed
+            # if the contact preference is set to email and notifications are turned on
+            if (current_user.contact_pref == 1 and current_user.account_change_notify):
+                send_notification_email(changes_made, current_user)
             flash("User profile have been saved")
     # populates the profile page with the current users attributes
     _populate_profile_form(form)
