@@ -3,7 +3,10 @@ let graph_prices = null;
 let layout = null;
 let current_stock = $("#stock_listing").first();
 const CYCLE_TIME = 7500;
-
+/*
+Loads the detail of a stock using its stockid
+stockid -- id of the stock
+*/
 
 function load_detail(id) {
     $.ajax({
@@ -60,7 +63,10 @@ function load_detail(id) {
         console.log("Failed AJAX Call");
     });
 }
-
+/*
+cycle to the next stock
+after 7.5 seconds
+*/
 
 function cycle_next_stock() {
     if (document.getElementById('auto_scroll').checked) {
