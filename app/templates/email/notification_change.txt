@@ -1,0 +1,10 @@
+Dear {{ user.username }},
+
+This is an email notification of a change to your account.
+
+If you made this change, please ignore this email.
+If you believe someone has unauthorized access to your account, please contact us immediately.
+
+Sincerely,
+
+The Droids Support Services

@@ -4,7 +4,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 from app import db
 from app.auth import bp
 from app.auth.forms import LoginForm, RegistrationForm, ResetPasswordRequestForm, ResetPasswordForm, ChangePasswordForm
-from app.models import User, History
+from app.models import User, History, News_Settings
 from app.emails.email import send_password_reset_email
 
 
@@ -52,6 +52,7 @@ def register():
         )
         user.store_history_record(history)
         db.session.add(user)
+        user.news_settings = News_Settings()
         db.session.commit()
         flash('You are now a registered user.')
         return redirect(url_for('auth.login'))

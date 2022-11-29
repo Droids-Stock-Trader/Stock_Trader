@@ -14,3 +14,10 @@ def send_password_reset_email(user):
                sender='jerry.aragon@student.csulb.edu', recipients=[user.email],
                text_body=render_template('email/reset_password.txt', user=user, token=token),
                html_body=render_template('email/reset_password.html',user=user, token=token))
+
+def send_notification_email(changes_made, user):
+    for attribute in changes_made:
+        send_email('Stock Trader: ' + attribute + ' Change Notification',
+                   sender='jerry.aragon@student.csulb.edu', recipients=[user.email],
+                   text_body=render_template('email/notification_change.txt', user=user),
+                   html_body=render_template('email/notification_change.html',user=user))

@@ -68,6 +68,21 @@ function load_detail(stock_symbol, timeframe) {
 }
 
 
+function load_summary(symbol) {
+    $.ajax({
+        data: { symbol: symbol },
+        type: 'POST',
+        url: '/stock/stock_summary'
+    }).done(function(data) {        
+        if (data['status_code'] === 200) {
+            $('#summary').text(data['summary']);
+        }
+    }).fail(function () {
+        console.log('Failed to get corp summary')
+    });
+}
+
+
 $(window).resize(function () {
     Plotly.newPlot("price_plot", chart_parameters, layout);
 });
@@ -82,14 +97,14 @@ function add_or_remove_stock(checkbox, symbol) {
     }).done(function(reponse) {
         let process = 'removed from';
         if (checkbox.checked) {
-            process = 'added to'
+            process = 'added to';
         }
-        let message = symbol + ' was ' + process + ' your watchlist.'
+        let message = symbol + ' was ' + process + ' your watchlist.';
         $('#alerts').html(function(i, origText) {
-            return '<div class="alert alert-success alert-dismissible fade show"><button type="button" class="btn-close" data-bs-dismiss="alert"></button>' + message + '</div>' + origText
+            return '<div class="alert alert-success alert-dismissible fade show"><button type="button" class="btn-close" data-bs-dismiss="alert"></button>' + message + '</div>' + origText;
         });       
     }).fail(function() {
-        console.log("Failed AJAX Call")
+        console.log("Failed AJAX Call");
     });
 }
 
