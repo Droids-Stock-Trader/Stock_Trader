@@ -1,0 +1,11 @@
+Dear {{ user.username }},
+
+This a notification to inform you the stock has been removed from your watchlist.
+
+You will no longer recieve regular updates regarding this stock.
+
+If you wish to recieve updates again, please add this stock to your watchlist again.
+
+Sincerely,
+
+The Droids Support Services

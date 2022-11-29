@@ -68,3 +68,23 @@ def send_notification_to_old_email(user):
         sender='jerry.aragon@student.csulb.edu', recipients=[user.email],
         text_body=render_template('email/notification_change.txt', user=user),
         html_body=render_template('email/notification_change.html',user=user))
+
+def send_watchlist_change_email(user, append, stock):
+    """
+    Sends a notification email to the user that
+    changes have been made to their watchlist.
+    Params
+    ------
+    user - the user who will be sent the email.
+    append -  boolean which determines if a stock has been appended or removed.
+    """
+    if append:
+        send_email('Stock Trader: ' + stock.corporate_name +' Watchlist Change Notification',
+            sender='jerry.aragon@student.csulb.edu', recipients=[user.email],
+            text_body=render_template('email/add_to_watchlist.txt', user=user),
+            html_body=render_template('email/add_to_watchlist.html',user=user))
+    else: 
+        send_email('Stock Trader: ' + stock.corporate_name + ' Watchlist Change Notification',
+            sender='jerry.aragon@student.csulb.edu', recipients=[user.email],
+            text_body=render_template('email/remove_from_watchlist.txt', user=user),
+            html_body=render_template('email/remove_from_watchlist.html',user=user))
