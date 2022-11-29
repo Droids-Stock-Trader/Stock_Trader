@@ -29,7 +29,7 @@ def stock():
         positions = []
     except KeyError:
         pass
-    print(positions)
+    print("POSITIONS",positions)
 
     return render_template('stock/stock.html', title=f'{symbol} Details', stock=asset,positions=positions)
 

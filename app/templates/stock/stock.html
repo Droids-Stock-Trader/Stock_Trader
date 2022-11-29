@@ -40,9 +40,24 @@
           <h2>Positions</h2>
           <div class="list-group list-group-flush border-bottom scrollarea">
             {% if positions|length > 0 %}
-              {% for pos in positions %}
-                <div class="list-group-item-flush"><strong>{{ pos.symbol }} {{pos.side}} </strong> {{pos.qty}}; Market Value {{pos.market_value}}</div>
-              {% endfor %}
+                <div class="cols-md-5">
+                  <h3>
+                    <strong>
+                      {% if positions.side == "long"%}
+                      Bought {{positions.symbol}}
+                      {% else %}
+                      Shorted {{positions.symbol}}
+                      {% endif %}
+                    </strong>
+                  </h3>
+                  <div class="col">
+                    <strong>Quantity:</strong> {{positions.qty}}<br>
+                    <strong>Market Value:</strong> {{positions.market_value}}<br>
+                    <strong>Current Price:</strong> {{positions.current_price}}<br>
+                    <strong>Average Price:</strong> {{'%0.2f'| format(positions.avg_entry_price|float)}}<br>
+                    <strong>Unrealized Profit:</strong> {{'%0.2f'| format(positions.unrealized_plpc|float)}}
+                  </div>
+                </div>
             {% else %}
               <h3>You currently have no positions.</h3>
             {% endif %} 
