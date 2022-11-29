@@ -44,6 +44,19 @@ def send_notification_email(changes_made, user):
                    text_body=render_template('email/notification_change.txt', user=user),
                    html_body=render_template('email/notification_change.html',user=user))
 
+def send_notifications_change_email(changes_made, user):
+    """
+    Sends a notification email for each user attribute that was changed.
+    Params
+    ------
+    user - the user who will be sent the emails.
+    """
+    for attribute in changes_made:
+        send_email('Stock Trader: ' + attribute + ' Notifications Have Been Changed',
+                   sender='jerry.aragon@student.csulb.edu', recipients=[user.email],
+                   text_body=render_template('email/notification_change.txt', user=user),
+                   html_body=render_template('email/notification_change.html',user=user))
+
 def send_password_change_email(user):
     """
     Sends a notification email when the user's password is changed.
