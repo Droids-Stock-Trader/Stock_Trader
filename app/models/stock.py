@@ -6,6 +6,7 @@ from alpaca.trading.client import TradingClient
 from datetime import datetime
 from flask import current_app
 import json
+import yfinance as yf
 
 class Stock(db.Model):
     __tablename__ = 'stock'
@@ -16,6 +17,40 @@ class Stock(db.Model):
 
     def __repr__(self):
         return f'<Stock: {self.symbol}>'
+
+    def get_current_financial_data(self) -> dict:
+        """
+        Returns the current financial data from yahoo finance.
+
+        The data is returned as a dictionary in dictionary form. For
+        additional information on the keys and values format, reference
+        yfinance.txt for more details.
+        """
+        return yf.Ticker(self.symbol).stats()
+    
+    def get_stock_lines(self, period='5d', interval='15m') -> dict:
+        """
+        Returns historical stock prices. The data is returned as a dictionary
+        object with value keys, ('dates', 'prices')
+
+        param:
+            period: str
+                Valid periods: 1d,5d (default),1mo,3mo,6mo,1y,2y,5y,10y,ytd,max
+
+            interval: str
+                Valid intervals: 1m,2m,5m,15m (default),30m,60m,90m,1h,1d,5d,1wk,1mo,3mo
+                Intraday data cannot extend last 60 days
+        """
+        # calls yahoo finance and extracts the data as a panda dataframe
+        raw_data = yf.Ticker(self.symbol)
+        dataframe = raw_data.history(period=period, interval=interval)
+        # Extracts the used data and formats
+        dates = dataframe.index
+        response_data = {}
+        response_data['dates'] = dates.strftime('%Y-%m-%d').tolist()
+        response_data['prices'] = dataframe['Close'].values.tolist()
+
+        return response_data
 
     @staticmethod
     def get_stock_bars(symbol, Unit : TimeFrameUnit, start_datetime : datetime):

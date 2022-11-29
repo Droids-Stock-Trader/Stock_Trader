@@ -11,15 +11,15 @@
       <div class="list-group list-group-flush border-bottom scrollarea">
         {% for stock in portfolio %}
         <a id="stock_listing" value="{{ stock.id }}" onclick="load_detail('{{ stock.id }}')" href="#" class="list-group-item list-group-item-action py-3 lh-sm">
-          <div class="d-flex w-100 align-itemscenter justify-content-between">
+          <div class="d-flex w-100 align-itemscenter justify-content-between mb-1">
             <div>
               <strong class="mb-1">{{ stock.corporate_name }}</strong>
               <small class="text-muted"> ({{ stock.symbol }})</small>
             </div>
-            {% if stock.price >= stock.open %}
-            <span>+1.75%</span>
+            {% if stock.price >= stock.prev_close %}
+            <span style="color: green;">+{{ stock.percent_change }}%</span>
             {% else %}
-            <span style='color: red'>-1.25%</span>
+            <span style='color: red'>({{ stock.percent_change }})%</span>
             {% endif %}
           </div>
           <div class="mb-1 d-flex">
@@ -32,7 +32,7 @@
       </div>
     </div>
     <div class="col-md-7 mb-5">
-      <h3 id="stock_graph">Alphabet Inc</h3>
+      <h3 id="stock_graph"></h3>
       <div class="card">
         <div class="card-body">
           <div class="border border-2 rounded">
@@ -40,11 +40,66 @@
           </div>
         </div>
         <div class="card-footer">
-          <strong>
-            This area here will give more details of the stock current values.<br>
-          </strong>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ab eius ex nihil quam nesciunt architecto corporis fugit, cupiditate hic quidem sapiente, quia mollitia vero dolor harum praesentium quas officiis accusantium! <br>
-          <a href="#">A link to the stock details page</a>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="auto_scroll" {% if auto == 'true' %} checked {% endif %}>
+            <label class="form-check-label" for="auto_scroll">Auto Scroll</label>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="d-flex align-items-end justify-content-start">
+            <div style="font-size: 20pt; font-weight: bold;">Price: </div>
+            <div style="font-size: 20pt; font-weight: bold;" class="px-2" id="price">--</div>
+            <div id="percent_change" style="padding-bottom: 3px; font-size: 15pt; font-weight: bold; color: black;"></div>
+          </div>
+          <div class="my-1">
+            <a id="detail_link" href="#">Details Page</a><br>
+          </div>
+          <div class="row gx-3 py-3">
+            <div class="col-sm-6">
+              <div class="d-flex justify-content-between">
+                <div>Open</div>
+                <div><b id="open">--</b></div>
+              </div>
+              <hr class="my-1">
+              <div class="d-flex justify-content-between">
+                <div>High</div>
+                <div><b id="high">--</b></div>
+              </div>
+              <hr class="my-1">
+              <div class="d-flex justify-content-between">
+                <div>Low</div>
+                <div><b id="low">--</b></div>
+              </div>
+              <hr class="my-1">
+              <div class="d-flex justify-content-between">
+                <div>Volume</div>
+                <div><b id="vol">--</b></div>
+              </div>
+              <hr class="my-1">
+            </div>
+            <div class="col-sm-6">
+              <div class="d-flex justify-content-between">
+                <div>Previous Close</div>
+                <div><b id="prev_close">--</b></div>
+              </div>
+              <hr class="my-1">
+              <div class="d-flex justify-content-between">
+                <div>PE Ratio (TTM)</div>
+                <div><b id="pe_ratio">--</b></div>
+              </div>
+              <hr class="my-1">
+              <div class="d-flex justify-content-between">
+                <div>Beta</div>
+                <div><b id="beta">--</b></div>
+              </div>
+              <hr class="my-1">
+              <div class="d-flex justify-content-between">
+                <div>Avg. Vol.</div>
+                <div><b id="avg_vol">--</b></div>
+              </div>
+              <hr class="my-1">
+            </div>
+          </div>
         </div>
       </div>
     </div>
