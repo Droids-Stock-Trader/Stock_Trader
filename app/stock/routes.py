@@ -31,8 +31,11 @@ def stock():
     APCA_API_BASE_URL="https://paper-api.alpaca.markets"
     URI = APCA_API_BASE_URL + "/v2/positions/" + symbol
     # URI = APCA_API_BASE_URL + "/v2/orders"
-    header={"ContentType":"application/x-www-form-urlencoded",'Authorization' : 'Bearer ' + current_user.get_alpaca_access_code()}
-    positions = requests.get(URI,headers=header).json()
+    if (current_user.get_alpaca_access_code()):        
+        header={"ContentType":"application/x-www-form-urlencoded",'Authorization' : 'Bearer ' + current_user.get_alpaca_access_code()}
+        positions = requests.get(URI,headers=header).json()
+    else:
+        positions = {}
     try:
         # Used for handling empty position response
         code = positions['code']
