@@ -9,7 +9,7 @@ from app import db
 from app.settings import bp
 from app.settings.forms import ProfileForm, NotificationForm, HeadlinesForm
 from app.models import History, News_Settings
-from app.emails.email import send_notification_email
+from app.emails.email import send_notification_email, send_notification_to_old_email, send_notifications_change_email
 
 
 @bp.route('/profile', methods=['GET', 'POST'])
@@ -70,6 +70,8 @@ def user_notifications():
                     f'changed: {_format_changes(changes_made)}.'
             )
             current_user.store_history_record(record)
+            # sends a notification based on the attribuutes changed
+            send_notifications_change_email(changes_made, current_user)
             db.session.commit()
             flash('Notification setting have been saved.')
     # populates the notification page with the current user notification settings
@@ -195,6 +197,8 @@ def _profile_changed(form: ProfileForm) -> list:
         current_user.phone_num = form.phone_number.data
     if current_user.email != form.email.data:
         changes.append("Email")
+        # sends a notification to old email before updating
+        send_notification_to_old_email(current_user)
         current_user.email = form.email.data
     if current_user.dob == None:
         if form.dob.data != None:

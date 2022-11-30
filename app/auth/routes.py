@@ -5,7 +5,8 @@ from app import db
 from app.auth import bp
 from app.auth.forms import LoginForm, RegistrationForm, ResetPasswordRequestForm, ResetPasswordForm, ChangePasswordForm
 from app.models import User, History, News_Settings
-from app.emails.email import send_password_reset_email
+from app.emails.email import send_password_reset_email, send_password_change_email
+
 
 
 @bp.route('/login', methods=['GET', 'POST'])
@@ -81,6 +82,8 @@ def reset_password(token):
     form = ResetPasswordForm()
     if form.validate_on_submit():
         user.set_password(form.password.data)
+        # sends an email notification
+        send_password_change_email(user)
         db.session.commit()
         flash('Your password has been reset.')
         return redirect(url_for('auth.login'))
@@ -98,6 +101,8 @@ def reset_password_preferences():
             description="User password has been changed."
         )
         user.store_history_record(history)
+        # sends an email notification
+        send_password_change_email(user)
         db.session.commit()
         flash('Your password has been reset.')
         return redirect(url_for('settings.user_preferences'))

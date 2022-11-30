@@ -8,6 +8,7 @@ from app.stock import bp
 from app.models import Stock, News, News_Settings
 from alpaca.data.timeframe import TimeFrame
 from datetime import datetime, timedelta
+from app.emails.email import send_watchlist_change_email
 
 
 @bp.route('/detail', methods=['GET', 'POST'])
@@ -119,6 +120,10 @@ def add_remove_to_watch_list():
             current_user.add_to_watch_list(stock)
         else:
             current_user.remove_from_watch_list(stock)    
+        # sends an email notification of a change in the watchlist
+        # if notifications are enabled for email and watchlist changes
+        if (current_user.contact_pref == 1 and current_user.watchlist_notify):
+            send_watchlist_change_email(current_user, append, stock)
         db.session.commit()
         return 'Success'
     except:
