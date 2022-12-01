@@ -107,3 +107,20 @@ function add_or_remove_stock(checkbox, symbol) {
         console.log("Failed AJAX Call");
     });
 }
+
+function create_order(symbol,qty,side) {
+    console.log(symbol)
+    console.log(qty)
+    console.log(side)
+    qty = Math.abs(qty)
+    $.ajax({
+        data: {symbol: symbol, qty: qty, side: side},
+        type: 'POST',
+        url: '/stock/create_order'
+    }).done(function(response) {
+        console.log(response)
+        location.reload()
+    }).fail(function() {
+        console.log("Failed AJAX Call")
+    })
+}

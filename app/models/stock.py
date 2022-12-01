@@ -3,8 +3,12 @@ from alpaca.data.requests import StockBarsRequest
 from alpaca.data.historical.stock import StockHistoricalDataClient
 from alpaca.data.timeframe import TimeFrameUnit
 from alpaca.trading.client import TradingClient
+from flask import current_app, render_template, url_for, redirect, flash, request
+from flask_login import current_user, login_required
 from datetime import datetime
 from flask import current_app
+import requests
+import urllib.parse
 import json
 import yfinance as yf
 
@@ -85,3 +89,13 @@ class Stock(db.Model):
         trading_client = TradingClient(ALPACA_API_KEY,ALPACA_SECRET_KEY)
         asset = trading_client.get_asset(symbol_or_asset_id=symbol)
         return asset
+
+    # @bp.route(('/alpaca_oauth'), methods=['GET'])
+    # @login_required
+    def get_account():
+        APCA_API_BASE_URL="https://paper-api.alpaca.markets"
+        URI = APCA_API_BASE_URL + "/v2/account"
+        data = {
+            'Authorization' : 'Bearer ' + current_user.get_alpaca_access_code()
+        }
+        response = requests.get(URI,data=data,headers={"ContentType":"application/x-www-form-urlencoded"}).json()

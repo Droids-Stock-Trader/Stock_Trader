@@ -5,6 +5,7 @@ from werkzeug.urls import url_parse
 from flask_login import current_user, login_required
 from app import db
 from app.stock import bp
+import requests
 from app.models import Stock, News, News_Settings
 from alpaca.data.timeframe import TimeFrame
 from datetime import datetime, timedelta
@@ -27,12 +28,27 @@ def stock():
     if news_results['status_code'] != 200:
         flash(news_results['message'])
         abort(500)
-     
+    
+    APCA_API_BASE_URL="https://paper-api.alpaca.markets"
+    URI = APCA_API_BASE_URL + "/v2/positions/" + symbol
+    # URI = APCA_API_BASE_URL + "/v2/orders"
+    if (current_user.get_alpaca_access_code()):        
+        header={"ContentType":"application/x-www-form-urlencoded",'Authorization' : 'Bearer ' + current_user.get_alpaca_access_code()}
+        positions = requests.get(URI,headers=header).json()
+    else:
+        positions = {}
+    try:
+        # Used for handling empty position response
+        code = positions['code']
+        positions = []
+    except KeyError:
+        pass
     return render_template(
         'stock/stock.html', 
         title=f'{symbol} Details', 
         stock=asset, 
-        articles=news_results['articles']
+        articles=news_results['articles'],
+        positions=positions
     )
 
 
@@ -129,3 +145,22 @@ def add_remove_to_watch_list():
     except:
         db.session.rollback()
         return 'Error'
+@bp.route('/create_order',methods=['POST'])
+@login_required
+def create_order():
+        symbol = request.form['symbol']
+        qty = request.form['qty']
+        side = request.form['side']
+        APCA_API_BASE_URL="https://paper-api.alpaca.markets"
+        URI = APCA_API_BASE_URL + "/v2/orders"
+        header={"ContentType":"application/x-www-form-urlencoded",'Authorization' : 'Bearer ' + current_user.get_alpaca_access_code()}
+        data = {
+            "symbol":symbol,
+            "qty":qty,
+            "side":side,
+            "type":"market",
+            "time_in_force":"gtc",
+        }
+        response = requests.post(URI,json=data,headers=header).json()
+        flash("Success!")
+        return response
