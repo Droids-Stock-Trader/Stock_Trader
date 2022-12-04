@@ -16,8 +16,18 @@ from app.emails.email import send_watchlist_change_email
 @login_required
 def stock():
     """ Stock Info Route """
-    symbol = request.args.get('stock')    
-    asset = Stock.get_stock_info(symbol).dict()
+    symbol = request.args.get('stock')
+    try:
+        asset = Stock.get_stock_info(symbol).dict()
+    except:
+        flash(f'{symbol} is not a recognized stock symbol')
+        return render_template(
+            'stock/stock.html', 
+            title=f'{symbol} Details', 
+            stock={'symbol': symbol}, 
+            articles=None,
+            positions=None
+    )
     # watchlist toggle
     asset['in_watch_list'] = current_user.stock_in_watch_list(asset['symbol'])
     # queryies the news to the stockname & stock symbol

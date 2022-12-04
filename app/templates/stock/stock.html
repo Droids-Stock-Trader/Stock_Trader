@@ -4,6 +4,13 @@
 
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
+{% if stock|length == 1 %}
+<div class="container">
+  <h1>Error in retreiving stock information</h1>
+  <hr>
+  <h3>Search results for "{{ stock['symbol'] }}" do not yield any information</h3>
+</div>
+{% else %}
 <div class="container mt-3">
     <div class="row g-5">
         <!-- Left Column -->
@@ -115,5 +122,6 @@
 <script src="{{ url_for('static', filename='stock/stock_detail.js') }}"></script>
 <script>load_detail('{{ stock["symbol"] }}', "Minute")</script>
 <script>load_summary('{{ stock["symbol"] }}')</script>
+{% endif %}
 
 {% endblock %}
