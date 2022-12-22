@@ -2,30 +2,68 @@
 
 {% block content %}
 
-<div class="container">
-    <div class="p-5 bg-secondary text-white rounded">
-        <div class="row">
-            <div class="col-md-4">
-                <img src="{{ url_for('static', filename='logo-200.png') }}" alt="Logo">
-            </div>
-            <div class="col-md-8">
-                <h1 class="m-0">Stock Trader</h1><br>
-                <h3 class="mt-0">Track all your stocks from one app</h3><br>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Cumque modi debitis cupiditate itaque explicabo eveniet alias ratione aliquid natus, doloremque ab! Sunt velit, obcaecati reiciendis libero quae at illum facere.
+<header class="p-5 bg-secondary text-white rounded">
+    <div class="container">
+        <div class="p-5 bg-secondary text-white rounded">
+            <div class="row">
+                <div class="col-md-4">
+                    <img src="{{ url_for('static', filename='logo-200.png') }}" alt="Logo">
+                </div>
+                <div class="col-md-8">
+                    <h1 class="m-0">Stock Trader</h1><br>
+                    <h3 class="mt-0">Invest your stocks, Trade them, Invest more!</h3><br>
+                    <a class="btn btn-lg btn-light" href="/auth/register">Get Started!</a>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</header>
 
-<div class="container my-5">
-    <div class="row">
-        <div class="col-md-6 p-3">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Necessitatibus natus aperiam tempora autem eum! Asperiores quos eveniet sunt, doloremque doloribus, aliquam necessitatibus ipsa, laborum omnis aperiam dolorum debitis vel corporis. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Qui aperiam ipsum libero commodi similique vero dicta a ratione, corrupti, ad voluptates atque dolorum accusamus, obcaecati distinctio consectetur earum quidem repellendus?
-        </div>
-        <div class="col-md-6 p-3">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Alias amet maiores iusto dolores id ipsum officia a beatae, provident esse numquam mollitia obcaecati expedita necessitatibus rerum dolore deleniti cupiditate quae? Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat facilis doloribus suscipit repellat. Eaque dolorum quis aperiam laboriosam, quibusdam ipsam inventore ipsa fugit ex, quasi ut, quaerat ab itaque ratione?
+<section id="about">
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-lg-8">
+                <h2>About Stock Trader</h2>
+                Stock Trader is a web application for individuals who want an easy, real-time way to monitor the stock market and their investments.The application has the capability to:
+                <ul>
+                    <li>provide alerts on specific stocks or companies</li>
+                    <li>allow the user to make transactions</li>
+                    <li>provide links to relevant news articles to keep users up to date</li>
+                </ul>
+            </div>
         </div>
     </div>
-</div>
+</section>
+
+<section id="services">
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-lg-8">
+                <h2>Services We Offer</h2>
+                The application is geared towards users who want quick, anytime, anywhere access to stock market information and the ability to easily make transactions on the go.
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section id="Contact">
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-lg-8">
+                <h2>Disclaimer</h2>
+                All investing involves risk.
+
+                Brokerage services are offered through Stock Trader LLC, (“RHF”) a registered broker dealer (member SIPC) and clearing services through StockTrader Securities, LLC, (“STS”) a registered broker dealer (member SIPC). Cryptocurrency services are offered through Stock Trader Crypto, LLC (“STC”) (NMLS ID: 1702840). The StockTrader Money spending account is offered through StockTrader, LLC (“STY”) (NMLS ID: 1990968), a licensed money transmitter. The StockTrader Cash Card is a prepaid card issued by Sutton Bank, Member FDIC, pursuant to a license from Mastercard® International Incorporated. RHF, RHY, RHC and RHS are affiliated entities and wholly owned subsidiaries of StockTrader Markets, Inc. RHF, RHY, RHC and RHS are not banks. Securities products offered by RHF are not FDIC insured and involve risk, including possible loss of principal. Cryptocurrencies held in RHC accounts are not covered by FDIC or SIPC protections and are not regulated by FINRA. RHY products are not subject to SIPC coverage but funds held in the StockTrader Money spending account and StockTrader Cash Card account may be eligible for FDIC pass-through insurance (see the StockTrader Cash Card Agreement and the StockTrader Spending Account Agreement).
+
+                Options trading entails significant risk and is not appropriate for all customers. Customers must read and understand the Characteristics and Risks of Standardized Options before engaging in any options trading strategies. Options transactions are often complex and may involve the potential of losing the entire investment in a relatively short period of time. Certain complex options strategies carry additional risk, including the potential for losses that may exceed the original investment amount.
+
+                Commission-free trading of stocks, ETFs and options refers to $0 commissions for StockTrader Financial self-directed individual cash or margin brokerage accounts that trade U.S. listed securities and certain OTC securities electronically. Keep in mind, other fees such as trading (non-commission) fees, Gold subscription fees, wire transfer fees, and paper statement fees may apply to your brokerage account. Please see StockTrader Financial’s Fee Schedule to learn more.
+
+                © 2022 StockTrader. All rights reserved.
+            </div>
+        </div>
+    </div>
+</section>
 
 {% endblock %}

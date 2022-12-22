@@ -103,7 +103,7 @@ def stock_info():
 def stock_summary():
     """
     API call that returns a business summary for the given stock 
-    symbol. If an error orrucs, returns 500, otherwose 200.
+    symbol. If an error occurs, returns 500, otherwise 200.
 
     param:
         symbol: The stock symbol to return the summary for.

@@ -18,7 +18,7 @@
           <!-- Watchlist button toggle-->
           <div class="my-2 row">
             <div class="col">
-              <label for="add_watchlist" class="form-check-label"><b>Add To Watchlist</b></label>
+              <label for="add_watchlist" class="form-check-label"><b>Add to WatchList</b></label>
             </div>
             <div class="col form-check form-switch">
               <input class="form-check-input" type="checkbox" id="add_watchlist" onchange="add_or_remove_stock(this, '{{ stock["symbol"] }}')" {% if stock["in_watch_list"] %} checked {% endif %}>
